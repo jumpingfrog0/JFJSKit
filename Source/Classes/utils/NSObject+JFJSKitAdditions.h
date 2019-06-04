@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  NSObject+JFJSKitAdditions.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,16 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import <Foundation/Foundation.h>
 
-@interface Tests : XCTestCase
+@interface NSObject (JFJSKitAdditions)
 
-@end
+- (void)mzd_jskit_hookSelector:(SEL)originalSelector
+    withDefaultImplementSelector:(SEL)defaultSelector
+                swizzledSelector:(SEL)swizzledSelector
+                        forClass:(Class)aClass;
 
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
++ (void)mzd_jskit_changeSelector:(SEL)sel withSelector:(SEL)swizzledSel;
+- (id)mzd_jskit_performSelector:(SEL)sel withObjects:(NSArray *)objects;
 
 @end
-

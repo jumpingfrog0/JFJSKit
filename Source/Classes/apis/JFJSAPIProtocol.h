@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSAPIRCTProtocol.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,36 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSAPIRequestProtocol.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <WebKit/WKWebView.h>
 
-@interface Tests : XCTestCase
+typedef void (^JFJSAPICompletionBlock)();
 
-@end
+@protocol JFJSAPIWebProtocol<NSObject>
 
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+- (void)webRunOnCompletion:(JFJSAPICompletionBlock)completion;
 
 @end
 
+@protocol JFJSAPIRCTProtocol<NSObject>
+
+- (void)rctRunOnCompletion:(JFJSAPICompletionBlock)completion;
+
+@end
+
+@protocol JFJSAPIProtocol<JFJSAPIWebProtocol, JFJSAPIRCTProtocol>
+
+@required
+@property (nonatomic, strong) id<JFJSAPIRequestProtocol> request;
+
++ (NSString *)command;
++ (NSURL *)commandURL;
+
+@optional
++ (NSArray *)httpCommands;
+
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion;
+
+@end

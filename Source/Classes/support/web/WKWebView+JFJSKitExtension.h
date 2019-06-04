@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  WKWebView+JFJSKitExtension.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,16 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
 
-@interface Tests : XCTestCase
+@class JFJSKitExtension;
 
-@end
+@interface WKWebView (JFJSKitExtension)
 
-@implementation Tests
+@property (nonatomic, strong) JFJSKitExtension *mzd_jskit_extension;
 
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+- (void)mzd_jskit_addCustomUserAgent:(NSString *)userAgent;
+- (void)mzd_jskit_evaluateJavaScriptWithURL:(NSURL *)url completionHandler:(void (^)(id result, NSError *error))handler;
 
 @end
-

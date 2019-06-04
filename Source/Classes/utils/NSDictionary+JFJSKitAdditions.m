@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  NSDictionary+JFJSKitAdditions.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,23 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "NSDictionary+JFJSKitAdditions.h"
 
-@interface Tests : XCTestCase
 
-@end
+@implementation NSDictionary (JFJSKitAdditions)
 
-@implementation Tests
-
-- (void)setUp
+- (NSString *)mzd_jskit_joinURLQueries
 {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    if (self.allKeys.count > 0) {
+        NSEnumerator *keyEnumerator = [self keyEnumerator];
+        id key                      = [keyEnumerator nextObject];
+        NSMutableString *query      = [NSMutableString stringWithFormat:@"%@=%@", key, self[key]];
+        while ((key = [keyEnumerator nextObject]) != nil) {
+            [query appendFormat:@"&%@=%@", key, self[key]];
+        }
+        return query;
+    }
+    return nil;
 }
 
 @end
-

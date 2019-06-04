@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSAPITerminate.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,30 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSAPITerminate.h"
 
-@interface Tests : XCTestCase
+@implementation JFJSAPITerminate
+
++ (NSString *)command {
+    return @"close";
+}
+
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
+    if (![self.request.viewController isKindOfClass:UIViewController.class]) {
+        [self.request.view removeFromSuperview];
+    } else if (self.request.viewController.navigationController.viewControllers.count > 1) {
+        [self.request.viewController.navigationController popViewControllerAnimated:YES];
+    } else {
+        if (self.request.viewController.presentingViewController) {
+            [self.request.viewController dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
+
+    [self.request onSuccess:nil];
+
+    if (completion) {
+        completion();
+    }
+}
 
 @end
-
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-@end
-

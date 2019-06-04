@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSKitDefines.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,28 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
 
-@interface Tests : XCTestCase
+#ifndef JFJSKitDefines_h
+#define JFJSKitDefines_h
 
-@end
+#ifdef DEBUG
+#define JFLogS(...) NSLog(__VA_ARGS__)
+#define JFLogM() NSLog(@"%d : [%@ %s]", __LINE__, self.class, sel_getName(_cmd))
 
-@implementation Tests
+#define JFLog(frmt, ...) JFLogS((@"[JUD] " frmt), ##__VA_ARGS__)
+#define JFLogSuccess(frmt, ...) JFLogS((@"✅[JUD] " frmt), ##__VA_ARGS__)
+#define JFLogWarning(frmt, ...) JFLogS((@"⚡[JUD] " frmt), ##__VA_ARGS__)
+#define JFLogError(frmt, ...) JFLogS((@"❌[JUD] " frmt), ##__VA_ARGS__)
 
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
+#else
+#define JFLogS(...)
+#define JFLogM()
 
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
+#define JFLog(frmt, ...)
+#define JFLogSuccess(frmt, ...)
+#define JFLogWarning(frmt, ...)
+#define JFLogError(frmt, ...)
+#endif
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
 
-@end
-
+#endif /* JFJSKitDefines_h */

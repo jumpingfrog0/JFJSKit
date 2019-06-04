@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSAPIChangeTitle.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,25 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSAPIChangeTitle.h"
 
-@interface Tests : XCTestCase
+@implementation JFJSAPIChangeTitle
 
-@end
-
-@implementation Tests
-
-- (void)setUp
++ (NSString *)command
 {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    return @"change_title";
 }
 
-- (void)tearDown
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
+    NSString *title = self.request.options[@"title"];
+    [self.request.viewController setTitle:title];
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    [self.request onSuccess:nil];
+
+    if (completion) {
+        completion();
+    }
 }
 
 @end
-

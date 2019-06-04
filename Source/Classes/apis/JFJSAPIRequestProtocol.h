@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSAPIRequestProtocol.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,18 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface Tests : XCTestCase
+@protocol JFJSAPIRequestProtocol<NSObject>
 
-@end
+@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) UIView *view;
+@property (nonatomic, strong) UIViewController *viewController;
 
-@implementation Tests
+- (NSDictionary *)options;
 
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+- (void)onSuccess:(NSDictionary *)result;
+- (void)onFailure:(NSDictionary *)result;
 
 @end
-

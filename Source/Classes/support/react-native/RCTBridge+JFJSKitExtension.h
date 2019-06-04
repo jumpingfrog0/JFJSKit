@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  RCTBridge+JFJSKitExtension.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,15 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import <React/RCTBridge.h>
 
-@interface Tests : XCTestCase
+@class RCTRootView;
+@class JFJSKitExtension;
 
-@end
+@interface RCTBridge (JFJSKitExtension)
 
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+@property (nonatomic, weak)   RCTRootView *mzd_jskit_rctRootView;
+@property(nonatomic, copy) NSArray<__kindof RCTRootView *> *mzd_jskit_rctRootViewStack;
+@property (nonatomic, strong) JFJSKitExtension *mzd_jskit_extension;
 
 @end
-

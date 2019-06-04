@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSKitRCTExtension.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,39 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSKitRCTExtension.h"
+#import "JFJSAPIRCTRequest.h"
+#import "RCTBridge+JFJSKitExtension.h"
+#import "JFJSKitExtension.h"
+#import <React/RCTBridge+Private.h>
+#import <React/RCTRootView.h>
 
-@interface Tests : XCTestCase
-
-@end
-
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+@interface JFJSKitRCTExtension ()<RCTBridgeModule>
 
 @end
 
+@implementation JFJSKitRCTExtension
+@synthesize bridge = _bridge;
+
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
+
+RCT_EXPORT_MODULE(JudaoJsBridge);
+
+RCT_EXPORT_METHOD(sendPromiseProtocol
+                  : (NSString *)protocolUrl resolver
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    RCTBridge *rootViewBridge = [self.bridge parentBridge];
+
+    JFJSAPIRCTRequest *rctRequest = [[JFJSAPIRCTRequest alloc] init];
+    rctRequest.url                 = [NSURL URLWithString:protocolUrl];
+    rctRequest.resolver            = resolve;
+    rctRequest.view                = rootViewBridge.mzd_jskit_rctRootView;
+    rctRequest.viewController      = rootViewBridge.mzd_jskit_rctRootView.reactViewController;
+
+    [rootViewBridge.mzd_jskit_extension handleRequest:rctRequest];
+}
+
+@end

@@ -34,7 +34,7 @@ TODO: Add long description of the pod here.
   #   'JFJSKit' => ['Source/Assets/*.png']
   # }
 
-  # s.public_header_files = 'Source/Classes/**/*.h'
-  # s.frameworks = 'Foundation', 'UIKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+   s.public_header_files = 'Source/Classes/**/*.h'
+   s.frameworks = 'Foundation', 'UIKit'
+   s.dependency 'React', '~> 0.51.0'
 end

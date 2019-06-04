@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  NSDictionary+JFJSAPIService.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,40 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "NSDictionary+JFJSAPIService.h"
+#import "NSString+JFJSKitAdditions.h"
 
-@interface Tests : XCTestCase
+@implementation NSDictionary (JFJSAPIService)
+
+- (NSString *)mzd_jsapi_jsSuccess
+{
+    NSDictionary *result;
+    if (self.allKeys.count > 0) {
+        result = @{
+            @"success": @(YES),
+            @"data": self,
+        };
+    } else {
+        result = @{
+            @"success": @(YES),
+        };
+    }
+
+    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
+    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
+    return msg;
+}
+
+- (NSString *)mzd_jsapi_jsError
+{
+    NSDictionary *result = @{
+        @"success": @(NO),
+        @"error": self,
+    };
+
+    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
+    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
+    return msg;
+}
 
 @end
-
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-@end
-

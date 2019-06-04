@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSKitExtension.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,32 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
 
-@interface Tests : XCTestCase
+#import "JFJSKitExtension.h"
+
+@implementation JFJSKitExtension
+
+- (BOOL)_allowScheme:(NSString *)scheme {
+    return [scheme isEqualToString:self.config.domain] || [scheme isEqualToString:@"http"] ||
+    [scheme isEqualToString:@"https"] || [self.config.otherDomains containsObject:scheme];
+}
+
+- (BOOL)handleRequest:(id<JFJSAPIRequestProtocol>)request {
+    NSString *scheme = request.url.scheme ?: @"";
+
+    if ([self _allowScheme:scheme]) {
+        return [self.apiService testRequest:request];
+    }
+
+    BOOL allowScheme = [self.config.openURLSchemes[scheme] boolValue];
+    if (allowScheme) {
+        UIApplication *app = [UIApplication sharedApplication];
+        if ([app canOpenURL:request.url]) {
+            [app openURL:request.url options:@{} completionHandler:nil];
+        }
+    }
+
+    return NO;
+}
 
 @end
-
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-@end
-

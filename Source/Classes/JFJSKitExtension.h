@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSKitExtension.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,19 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSAPIService.h"
+#import "JFJSKitExtensionConfig.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface Tests : XCTestCase
+@class WKWebView;
+@class WKNavigationAction;
 
-@end
+@interface JFJSKitExtension : NSObject
 
-@implementation Tests
+@property (nonatomic, strong) JFJSAPIService *apiService;
+@property (nonatomic, strong) JFJSKitExtensionConfig *config;
 
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+- (BOOL)handleRequest:(id<JFJSAPIRequestProtocol>)request;
 
 @end
-

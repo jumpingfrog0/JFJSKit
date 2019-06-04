@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSAPIOpenURL.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,28 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSAPIOpenURL.h"
 
-@interface Tests : XCTestCase
+
+@implementation JFJSAPIOpenURL
+
++ (NSString *)command
+{
+    return @"open_scheme";
+}
+
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
+{
+    NSURL *url = [NSURL URLWithString:self.request.options[@"url"]];
+    if (url) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+
+    [self.request onSuccess:nil];
+
+    if (completion) {
+        completion();
+    }
+}
 
 @end
-
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-@end
-

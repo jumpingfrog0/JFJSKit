@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSKitExtensionConfig.h
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,14 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
 
-@interface Tests : XCTestCase
+#import <Foundation/Foundation.h>
 
-@end
+@interface JFJSKitExtensionConfig : NSObject
 
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+@property (nonatomic, strong) NSString *domain;
+// 新版扩展支持更多domain
+@property (nonatomic, copy) NSSet *otherDomains;
+@property (nonatomic, strong) NSDictionary *openURLSchemes;
 
 @end
-

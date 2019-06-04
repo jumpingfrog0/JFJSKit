@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSAPIOpenBrowser.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,27 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSAPIOpenBrowser.h"
 
-@interface Tests : XCTestCase
+@implementation JFJSAPIOpenBrowser
 
-@end
-
-@implementation Tests
-
-- (void)setUp
++ (NSString *)command
 {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    return @"open_in_browser";
 }
 
-- (void)tearDown
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
+    NSURL *url = [NSURL URLWithString:self.request.options[@"url"]];
+    if (url) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    [self.request onSuccess:nil];
+
+    if (completion) {
+        completion();
+    }
 }
 
 @end
-

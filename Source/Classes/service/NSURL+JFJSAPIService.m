@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  NSURL+JFJSAPIService.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,37 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "NSString+JFJSKitAdditions.h"
+#import "NSURL+JFJSAPIService.h"
+#import "NSURL+JFJSKitAdditions.h"
 
-@interface Tests : XCTestCase
+@implementation NSURL (JFJSAPIService)
+
+- (NSString *)mzd_jsapi_jsEvaluationWith:(NSString *)msg
+{
+    NSString *jsFunction = [self mzd_jsapi_callback];
+    NSString *jsFlag     = [self mzd_jsapi_flag];
+    if (jsFunction && jsFlag) {
+        return [NSString stringWithFormat:@"javascript:%@(\"%@\", \"%@\")", jsFunction, jsFlag, msg];
+    }
+    return nil;
+}
+
+- (NSDictionary *)mzd_jsapi_parameters
+{
+    NSString *json = [self mzd_jskit_parameters][@"params"];
+    json           = [json mzd_jskit_stringByUnescapingFromURLArgument];
+    return [json mzd_jskit_JSONObject];
+}
+
+- (NSString *)mzd_jsapi_callback
+{
+    return [self mzd_jskit_parameters][@"callback"];
+}
+
+- (NSString *)mzd_jsapi_flag
+{
+    return [self mzd_jskit_parameters][@"flag"];
+}
 
 @end
-
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-@end
-

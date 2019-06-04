@@ -1,6 +1,6 @@
 //
-//  JFJSKitTests.m
-//  JFJSKitTests
+//  JFJSAPIRCTRequest.m
+//  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
 //
@@ -25,30 +25,45 @@
 //  THE SOFTWARE.
 //
 
-@import XCTest;
+#import "JFJSAPIRCTRequest.h"
+#import "NSURL+JFJSAPIService.h"
+#import "NSDictionary+JFJSAPIService.h"
 
-@interface Tests : XCTestCase
+@interface JFJSAPIRCTRequest ()
 
-@end
-
-@implementation Tests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
+@property (nonatomic, strong) NSDictionary *options;
 
 @end
 
+@implementation JFJSAPIRCTRequest
+@synthesize url            = _url;
+@synthesize view           = _view;
+@synthesize viewController = _viewController;
+
+- (void)setUrl:(NSURL *)url {
+    if (_url != url) {
+        _url = url;
+
+        self.options = [url mzd_jsapi_parameters];
+    }
+}
+
+- (void)onSuccess:(NSDictionary *)result {
+    if (self.resolver) {
+        if (!result) {
+            result = @{};
+        }
+        self.resolver([result mzd_jsapi_jsSuccess]);
+    }
+}
+
+- (void)onFailure:(NSDictionary *)result {
+    if (self.resolver) {
+        if (!result) {
+            result = @{};
+        }
+        self.resolver([result mzd_jsapi_jsError]);
+    }
+}
+
+@end
