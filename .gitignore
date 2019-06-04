@@ -75,5 +75,7 @@ iOSInjectionProject/
 # AppCode
 .idea/
 
-# node_modules
+# react-native
+yarn.lock
+package.json
 node_modules/
