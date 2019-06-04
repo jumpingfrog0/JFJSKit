@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'JFJSKit_Example' do
+  pod 'JFJSKit', :path => '../'
+
+  target 'JFJSKit_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
