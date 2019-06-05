@@ -42,13 +42,6 @@
     return nil;
 }
 
-+ (NSURL *)commandURL
-{
-    NSString *url = [NSString stringWithFormat:@"judao://%@", self.command];
-    return [NSURL URLWithString:url];
-}
-
-
 - (void)runOnCompletion:(JFJSAPICompletionBlock)completion
 {
     if ([self.request isKindOfClass:JFJSAPIWebRequest.class]) {
@@ -59,21 +52,29 @@
         if ([self respondsToSelector:@selector(rctRunOnCompletion:)]) {
             [self rctRunOnCompletion:completion];
         }
+    } else {
+        [self apiRunOnCompletion:completion];
     }
 }
 
-- (void)webRunOnCompletion:(JFJSAPICompletionBlock)completion
-{
-    JFLogWarning(@"你可能忘记实现 webRunOnCompletion:");
+- (void)apiRunOnCompletion:(JFJSAPICompletionBlock)completion {
+    JFLogWarning(@"The request is neither `JFJSAPIWebRequest` nor `JFJSAPIRCTRequest`");
     [self.request onFailure:nil];
     if (completion) {
         completion();
     }
 }
 
-- (void)rctRunOnCompletion:(JFJSAPICompletionBlock)completion
-{
-    JFLogWarning(@"你可能忘记实现 rctRunOnCompletion:");
+- (void)webRunOnCompletion:(JFJSAPICompletionBlock)completion {
+    JFLogWarning(@"You maybe forget to implement `webRunOnCompletion:`");
+    [self.request onFailure:nil];
+    if (completion) {
+        completion();
+    }
+}
+
+- (void)rctRunOnCompletion:(JFJSAPICompletionBlock)completion {
+    JFLogWarning(@"You maybe forget to implement `rctRunOnCompletion:`");
     [self.request onFailure:nil];
     if (completion) {
         completion();

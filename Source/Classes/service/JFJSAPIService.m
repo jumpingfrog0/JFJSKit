@@ -35,8 +35,8 @@
 #import "JFJSAPIOpenURL.h"
 #import "JFJSAPITerminate.h"
 #import "JFJSKitDefines.h"
-#import "NSDictionary+JFJSAPIService.h"
-#import "NSURL+JFJSAPIService.h"
+#import "NSDictionary+JFJSAPI.h"
+#import "NSURL+JFJSAPI.h"
 
 @interface JFJSAPIService ()
 

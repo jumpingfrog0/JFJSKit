@@ -27,8 +27,8 @@
 
 #import "JFJSAPIWebRequest.h"
 #import "JFJSKitDefines.h"
-#import "NSDictionary+JFJSAPIService.h"
-#import "NSURL+JFJSAPIService.h"
+#import "NSDictionary+JFJSAPI.h"
+#import "NSURL+JFJSAPI.h"
 #import <WebKit/WKWebView.h>
 
 @interface JFJSAPIWebRequest ()
@@ -59,15 +59,7 @@
 
     NSString *msg = [result mzd_jsapi_jsSuccess];
     NSString *js  = [self.url mzd_jsapi_jsEvaluationWith:msg];
-    if (js.length > 0) {
-        WKWebView *wv = (WKWebView *)self.view;
-        [wv evaluateJavaScript:js
-             completionHandler:^(id s, NSError *error) {
-                 if (error) {
-                     JFLogError(@"evaluate js %@ failed %@", js, error);
-                 }
-             }];
-    }
+    [self evaluateJavaScript:js];
 }
 
 - (void)onFailure:(NSDictionary *)result
@@ -78,15 +70,31 @@
 
     NSString *msg = [result mzd_jsapi_jsError];
     NSString *js  = [self.url mzd_jsapi_jsEvaluationWith:msg];
-    if (js.length > 0) {
-        WKWebView *wv = (WKWebView *)self.view;
-        [wv evaluateJavaScript:js
-             completionHandler:^(id s, NSError *error) {
-                 if (error) {
-                     JFLogError(@"evaluate js %@ failed %@", js, error);
-                 }
-             }];
+    [self evaluateJavaScript:js];
+}
+
+- (BOOL)canEvaluateJavaScript {
+    return [self.view isKindOfClass:[WKWebView class]];
+}
+
+- (void)evaluateJavaScript:(NSString *)js {
+    if (![self canEvaluateJavaScript]) {
+        JFLogError(@"Evaluate js failed, because the container is not a WKWebView. Protocol: %@", self.url);
+        return;
     }
+
+    if (js.length <= 0) {
+        JFLogError(@"Evaluate js failed. Javascript is empty. Protocol: %@", self.url);
+        return;
+    }
+
+    WKWebView *wv = (WKWebView *)self.view;
+    [wv evaluateJavaScript:js
+         completionHandler:^(id s, NSError *error) {
+             if (error) {
+                 JFLogError(@"Evaluate js failed. js: %@ , error: %@", js, error);
+             }
+         }];
 }
 
 @end

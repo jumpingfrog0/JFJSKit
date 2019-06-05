@@ -1,5 +1,5 @@
 //
-//  NSURL+JFJSAPIService.m
+//  NSDictionary+JFJSAPIService.m
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,37 +25,40 @@
 //  THE SOFTWARE.
 //
 
+#import "NSDictionary+JFJSAPI.h"
 #import "NSString+JFJSKitAdditions.h"
-#import "NSURL+JFJSAPIService.h"
-#import "NSURL+JFJSKitAdditions.h"
 
-@implementation NSURL (JFJSAPIService)
+@implementation NSDictionary (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsEvaluationWith:(NSString *)msg
+- (NSString *)mzd_jsapi_jsSuccess
 {
-    NSString *jsFunction = [self mzd_jsapi_callback];
-    NSString *jsFlag     = [self mzd_jsapi_flag];
-    if (jsFunction && jsFlag) {
-        return [NSString stringWithFormat:@"javascript:%@(\"%@\", \"%@\")", jsFunction, jsFlag, msg];
+    NSDictionary *result;
+    if (self.allKeys.count > 0) {
+        result = @{
+            @"success": @(YES),
+            @"data": self,
+        };
+    } else {
+        result = @{
+            @"success": @(YES),
+        };
     }
-    return nil;
+
+    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
+    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
+    return msg;
 }
 
-- (NSDictionary *)mzd_jsapi_parameters
+- (NSString *)mzd_jsapi_jsError
 {
-    NSString *json = [self mzd_jskit_parameters][@"params"];
-    json           = [json mzd_jskit_stringByUnescapingFromURLArgument];
-    return [json mzd_jskit_JSONObject];
-}
+    NSDictionary *result = @{
+        @"success": @(NO),
+        @"error": self,
+    };
 
-- (NSString *)mzd_jsapi_callback
-{
-    return [self mzd_jskit_parameters][@"callback"];
-}
-
-- (NSString *)mzd_jsapi_flag
-{
-    return [self mzd_jskit_parameters][@"flag"];
+    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
+    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
+    return msg;
 }
 
 @end

@@ -26,8 +26,8 @@
 //
 
 #import "JFJSAPIRCTRequest.h"
-#import "NSURL+JFJSAPIService.h"
-#import "NSDictionary+JFJSAPIService.h"
+#import "NSURL+JFJSAPI.h"
+#import "NSDictionary+JFJSAPI.h"
 
 @interface JFJSAPIRCTRequest ()
 

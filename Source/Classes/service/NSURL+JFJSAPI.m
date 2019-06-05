@@ -1,5 +1,5 @@
 //
-//  NSDictionary+JFJSAPIService.h
+//  NSURL+JFJSAPIService.m
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,11 +25,37 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+#import "NSString+JFJSKitAdditions.h"
+#import "NSURL+JFJSAPI.h"
+#import "NSURL+JFJSKitAdditions.h"
 
-@interface NSDictionary (JFJSAPIService)
+@implementation NSURL (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsSuccess;
-- (NSString *)mzd_jsapi_jsError;
+- (NSString *)mzd_jsapi_jsEvaluationWith:(NSString *)msg
+{
+    NSString *jsFunction = [self mzd_jsapi_callback];
+    NSString *jsFlag     = [self mzd_jsapi_flag];
+    if (jsFunction && jsFlag) {
+        return [NSString stringWithFormat:@"javascript:%@(\"%@\", \"%@\")", jsFunction, jsFlag, msg];
+    }
+    return nil;
+}
+
+- (NSDictionary *)mzd_jsapi_parameters
+{
+    NSString *json = [self mzd_jskit_parameters][@"params"];
+    json           = [json mzd_jskit_stringByUnescapingFromURLArgument];
+    return [json mzd_jskit_JSONObject];
+}
+
+- (NSString *)mzd_jsapi_callback
+{
+    return [self mzd_jskit_parameters][@"callback"];
+}
+
+- (NSString *)mzd_jsapi_flag
+{
+    return [self mzd_jskit_parameters][@"flag"];
+}
 
 @end

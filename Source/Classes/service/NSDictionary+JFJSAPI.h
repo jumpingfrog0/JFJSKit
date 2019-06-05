@@ -1,5 +1,5 @@
 //
-//  NSURL+JFJSAPIService.h
+//  NSDictionary+JFJSAPIService.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -27,12 +27,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSURL (JFJSAPIService)
+@interface NSDictionary (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsEvaluationWith:(NSString *)msg;
-
-- (NSDictionary *)mzd_jsapi_parameters;
-- (NSString *)mzd_jsapi_callback;
-- (NSString *)mzd_jsapi_flag;
+- (NSString *)mzd_jsapi_jsSuccess;
+- (NSString *)mzd_jsapi_jsError;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  NSDictionary+JFJSAPIService.m
+//  NSURL+JFJSAPIService.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,40 +25,14 @@
 //  THE SOFTWARE.
 //
 
-#import "NSDictionary+JFJSAPIService.h"
-#import "NSString+JFJSKitAdditions.h"
+#import <Foundation/Foundation.h>
 
-@implementation NSDictionary (JFJSAPIService)
+@interface NSURL (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsSuccess
-{
-    NSDictionary *result;
-    if (self.allKeys.count > 0) {
-        result = @{
-            @"success": @(YES),
-            @"data": self,
-        };
-    } else {
-        result = @{
-            @"success": @(YES),
-        };
-    }
+- (NSString *)mzd_jsapi_jsEvaluationWith:(NSString *)msg;
 
-    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
-    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
-    return msg;
-}
-
-- (NSString *)mzd_jsapi_jsError
-{
-    NSDictionary *result = @{
-        @"success": @(NO),
-        @"error": self,
-    };
-
-    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
-    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
-    return msg;
-}
+- (NSDictionary *)mzd_jsapi_parameters;
+- (NSString *)mzd_jsapi_callback;
+- (NSString *)mzd_jsapi_flag;
 
 @end

@@ -30,16 +30,18 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WKWebView.h>
 
-typedef void (^JFJSAPICompletionBlock)();
+typedef void (^JFJSAPICompletionBlock)(void);
 
 @protocol JFJSAPIWebProtocol<NSObject>
 
+@optional
 - (void)webRunOnCompletion:(JFJSAPICompletionBlock)completion;
 
 @end
 
 @protocol JFJSAPIRCTProtocol<NSObject>
 
+@optional
 - (void)rctRunOnCompletion:(JFJSAPICompletionBlock)completion;
 
 @end
@@ -50,11 +52,11 @@ typedef void (^JFJSAPICompletionBlock)();
 @property (nonatomic, strong) id<JFJSAPIRequestProtocol> request;
 
 + (NSString *)command;
-+ (NSURL *)commandURL;
-
-@optional
-+ (NSArray *)httpCommands;
 
 - (void)runOnCompletion:(JFJSAPICompletionBlock)completion;
+
+@optional
++ (NSURL *)commandURL;
++ (NSArray *)httpCommands;
 
 @end
