@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'JFJSKit'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of JFJSKit.'
+  s.summary          = 'An iOS framework for sending messages between Obj-C and JavaScript in WKWebView and React-Native.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,10 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+    1. Pluginization, be flexible to extend
+    2. Support to WKWebView, React-Native
+    3. Non-intrusive, independent of the container(webview, rctRootView)
+    4. provide build-in basic plugin
                        DESC
 
   s.homepage         = 'https://github.com/huangdonghong/JFJSKit'
@@ -35,6 +38,6 @@ TODO: Add long description of the pod here.
   # }
 
    s.public_header_files = 'Source/Classes/**/*.h'
-   s.frameworks = 'Foundation', 'UIKit'
+   s.frameworks = 'Foundation', 'UIKit', 'CommonCrypto', 'WebKit', 'CoreLocation'
    s.dependency 'React', '~> 0.51.0'
 end
