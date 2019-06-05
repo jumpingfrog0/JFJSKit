@@ -26,7 +26,7 @@
 //
 
 #import "JFJSAPIHookWebView.h"
-#import "WKWebView+JFJSKitExtension.h"
+#import "WKWebView+JFJSKitPlugin.h"
 
 @interface JFJSAPIHookWebView () <WKNavigationDelegate>
 

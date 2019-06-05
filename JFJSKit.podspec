@@ -38,6 +38,6 @@ Pod::Spec.new do |s|
   # }
 
    s.public_header_files = 'Source/Classes/**/*.h'
-   s.frameworks = 'Foundation', 'UIKit', 'CommonCrypto', 'WebKit', 'CoreLocation'
+   s.frameworks = 'Foundation', 'UIKit', 'WebKit', 'CoreLocation'
    s.dependency 'React', '~> 0.51.0'
 end

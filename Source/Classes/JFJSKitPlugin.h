@@ -1,5 +1,5 @@
 //
-//  JFJSKitRCTExtension.h
+//  JFJSKitPlugin.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,8 +25,19 @@
 //  THE SOFTWARE.
 //
 
+#import "JFJSAPIService.h"
+#import "JFJSKitPluginConfig.h"
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface JFJSKitRCTExtension : NSObject
+@class WKWebView;
+@class WKNavigationAction;
+
+@interface JFJSKitPlugin : NSObject
+
+@property (nonatomic, strong) JFJSAPIService *apiService;
+@property (nonatomic, strong) JFJSKitPluginConfig *config;
+
+- (BOOL)handleRequest:(id<JFJSAPIRequestProtocol>)request;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  WKWebView+JFJSKitExtension.h
+//  JFJSKitRCTPlugin.m
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,16 +25,39 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
-#import <WebKit/WebKit.h>
+#import "JFJSKitRCTPlugin.h"
+#import "JFJSAPIRCTRequest.h"
+#import "RCTBridge+JFJSKitPlugin.h"
+#import "JFJSKitPlugin.h"
+#import <React/RCTBridge+Private.h>
+#import <React/RCTRootView.h>
 
-@class JFJSKitExtension;
+@interface JFJSKitRCTPlugin ()<RCTBridgeModule>
 
-@interface WKWebView (JFJSKitExtension)
+@end
 
-@property (nonatomic, strong) JFJSKitExtension *jf_jskit_extension;
+@implementation JFJSKitRCTPlugin
+@synthesize bridge = _bridge;
 
-- (void)jf_jskit_addCustomUserAgent:(NSString *)userAgent;
-- (void)jf_jskit_evaluateJavaScriptWithURL:(NSURL *)url completionHandler:(void (^)(id result, NSError *error))handler;
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
+
+RCT_EXPORT_MODULE(JSKitBridge);
+
+RCT_EXPORT_METHOD(sendPromiseProtocol
+                  : (NSString *)protocolUrl
+                  : (RCTPromiseResolveBlock)resolver
+                  : (RCTPromiseRejectBlock)rejecter) {
+    RCTBridge *rootViewBridge = [self.bridge parentBridge];
+
+    JFJSAPIRCTRequest *rctRequest = [[JFJSAPIRCTRequest alloc] init];
+    rctRequest.url                 = [NSURL URLWithString:protocolUrl];
+    rctRequest.resolver            = resolver;
+    rctRequest.view                = rootViewBridge.jf_jskit_rctRootView;
+    rctRequest.viewController      = rootViewBridge.jf_jskit_rctRootView.reactViewController;
+
+    [rootViewBridge.jf_jskit_extension handleRequest:rctRequest];
+}
 
 @end

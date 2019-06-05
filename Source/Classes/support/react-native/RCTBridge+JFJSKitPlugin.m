@@ -1,5 +1,5 @@
 //
-//  RCTBridge+JFJSKitExtension.m
+//  RCTBridge+JFJSKitPlugin.m
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -27,23 +27,23 @@
 
 #import <React/RCTBridge.h>
 #import <objc/runtime.h>
-#import "RCTBridge+JFJSKitExtension.h"
-#import "JFJSKitExtension.h"
+#import "RCTBridge+JFJSKitPlugin.h"
+#import "JFJSKitPlugin.h"
 
-static char kJFRCTBridgeProperty_jskit_extension;
+static char kJFRCTBridgeProperty_jskit_plugin;
 static char kJFRCTBridgeProperty_jskit_rctRootView;
 static char kJFRCTBridgeProperty_jskit_rctRootViewStack;
 
-@implementation RCTBridge (JFJSKitExtension)
+@implementation RCTBridge (JFJSKitPlugin)
 
-- (JFJSKitExtension *)jf_jskit_extension {
-    return objc_getAssociatedObject(self, &kJFRCTBridgeProperty_jskit_extension);
+- (JFJSKitPlugin *)jf_jskit_plugin {
+    return objc_getAssociatedObject(self, &kJFRCTBridgeProperty_jskit_plugin);
 }
 
-- (void)setJf_jskit_extension:(JFJSKitExtension *)extension {
-    if (self.jf_jskit_extension != extension) {
+- (void)setJf_jskit_plugin:(JFJSKitPlugin *)plugin {
+    if (self.jf_jskit_plugin != plugin) {
         objc_setAssociatedObject(
-            self, &kJFRCTBridgeProperty_jskit_extension, extension, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            self, &kJFRCTBridgeProperty_jskit_plugin, plugin, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 

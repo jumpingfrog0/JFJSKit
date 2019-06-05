@@ -27,47 +27,47 @@
 
 #import "JFJSKitDefines.h"
 #import "NSObject+JFJSKitAdditions.h"
-#import "WKWebView+JFJSKitExtension.h"
-#import "WKWebView+JFJSKitExtension_jsInject.h"
+#import "WKWebView+JFJSKitPlugin.h"
+#import "WKWebView+JFJSKitPlugin_jsInject.h"
 #import <objc/runtime.h>
 
-static char kJFWKWebViewProperty_jskit_extension_jsInject_jsURL;
-static char kJFWKWebViewProperty_jskit_extension_jsInject_jsURLBlock;
+static char kJFWKWebViewProperty_jskit_plugin_jsInject_jsURL;
+static char kJFWKWebViewProperty_jskit_plugin_jsInject_jsURLBlock;
 
-@implementation WKWebView (JFJSKitExtension_jsInject)
+@implementation WKWebView (JFJSKitPlugin_jsInject)
 
 + (void)load {
-    [self jf_jskit_extension_jsInject_hookNavigationDelegate];
+    [self jf_jskit_plugin_jsInject_hookNavigationDelegate];
 }
 
 #pragma mark-- HookNaivationDelegate
-+ (void)jf_jskit_extension_jsInject_hookNavigationDelegate {
++ (void)jf_jskit_plugin_jsInject_hookNavigationDelegate {
     SEL originalSelector = @selector(setNavigationDelegate:);
-    SEL swizzledSelector = @selector(jf_jskit_extension_jsInject_setNavigationDelegate:);
+    SEL swizzledSelector = @selector(jf_jskit_plugin_jsInject_setNavigationDelegate:);
 
     [self jf_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
 }
 
-- (void)jf_jskit_extension_jsInject_setNavigationDelegate:(id<WKNavigationDelegate>)delegate {
+- (void)jf_jskit_plugin_jsInject_setNavigationDelegate:(id<WKNavigationDelegate>)delegate {
     Class aClass = [delegate class];
 
     SEL originalSelector = @selector(webView:didFinishNavigation:);
-    SEL defaultSelector  = @selector(jf_jskit_extension_jsInject_default_webView:didFinishNavigation:);
-    SEL swizzledSelector = @selector(jf_jskit_extension_jsInject_webView:didFinishNavigation:);
+    SEL defaultSelector  = @selector(jf_jskit_plugin_jsInject_default_webView:didFinishNavigation:);
+    SEL swizzledSelector = @selector(jf_jskit_plugin_jsInject_webView:didFinishNavigation:);
     [self jf_jskit_hookSelector:originalSelector
         withDefaultImplementSelector:defaultSelector
                     swizzledSelector:swizzledSelector
                             forClass:aClass];
 
-    [self jf_jskit_extension_jsInject_setNavigationDelegate:delegate];
+    [self jf_jskit_plugin_jsInject_setNavigationDelegate:delegate];
 }
 
-- (void)jf_jskit_extension_jsInject_default_webView:(WKWebView *)webView
+- (void)jf_jskit_plugin_jsInject_default_webView:(WKWebView *)webView
                                  didFinishNavigation:(WKNavigation *)navigation {
 }
 
-- (void)jf_jskit_extension_jsInject_webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    // 注入 js
+- (void)jf_jskit_plugin_jsInject_webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    // inject javascript
     if (!webView.jf_jskit_jsURL) {
         if (webView.jf_jskit_jsURLBlock) {
             webView.jf_jskit_jsURL = webView.jf_jskit_jsURLBlock(webView.URL);
@@ -80,28 +80,28 @@ static char kJFWKWebViewProperty_jskit_extension_jsInject_jsURLBlock;
                                    }
                                }];
 
-    [self jf_jskit_extension_jsInject_webView:webView didFinishNavigation:navigation];
+    [self jf_jskit_plugin_jsInject_webView:webView didFinishNavigation:navigation];
 }
 
 - (NSURL *)jf_jskit_jsURL {
-    return objc_getAssociatedObject(self, &kJFWKWebViewProperty_jskit_extension_jsInject_jsURL);
+    return objc_getAssociatedObject(self, &kJFWKWebViewProperty_jskit_plugin_jsInject_jsURL);
 }
 
 - (void)setJf_jskit_jsURL:(NSURL *)url {
     if (self.jf_jskit_jsURL != url) {
         objc_setAssociatedObject(
-            self, &kJFWKWebViewProperty_jskit_extension_jsInject_jsURL, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            self, &kJFWKWebViewProperty_jskit_plugin_jsInject_jsURL, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
 - (NSURL * (^)(NSURL *))jf_jskit_jsURLBlock {
-    return objc_getAssociatedObject(self, &kJFWKWebViewProperty_jskit_extension_jsInject_jsURLBlock);
+    return objc_getAssociatedObject(self, &kJFWKWebViewProperty_jskit_plugin_jsInject_jsURLBlock);
 }
 
 - (void)setJf_jskit_jsURLBlock:(NSURL * (^)(NSURL *))block {
     if (self.jf_jskit_jsURLBlock != block) {
         objc_setAssociatedObject(
-            self, &kJFWKWebViewProperty_jskit_extension_jsInject_jsURLBlock, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
+            self, &kJFWKWebViewProperty_jskit_plugin_jsInject_jsURLBlock, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
     }
 }
 

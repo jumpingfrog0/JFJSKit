@@ -1,5 +1,5 @@
 //
-//  RCTBridge+JFJSKitExtension.h
+//  JFJSKitPluginConfig.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,15 +25,24 @@
 //  THE SOFTWARE.
 //
 
-#import <React/RCTBridge.h>
 
-@class RCTRootView;
-@class JFJSKitExtension;
+#import <Foundation/Foundation.h>
 
-@interface RCTBridge (JFJSKitExtension)
+@interface JFJSKitPluginConfig : NSObject
 
-@property (nonatomic, weak)   RCTRootView *jf_jskit_rctRootView;
-@property(nonatomic, copy) NSArray<__kindof RCTRootView *> *jf_jskit_rctRootViewStack;
-@property (nonatomic, strong) JFJSKitExtension *jf_jskit_extension;
+/**
+ * The header of protocol allowed among native client, webview and react-native.
+ */
+@property (nonatomic, copy) NSSet<NSString *> *allowSchemes;
+
+/**
+ * The schemes that allow to open url.
+ *
+ * By default, The WKWebView injected with jskit plugin is not allowed to open URLScheme. It's mean that you can not open other external app.
+ * Adding some URLSchemes to whitelist for allowing to open external url by setting `openURLSchemes`.
+ *
+ * such as: @{ @"scheme" : @(YES) }
+ */
+@property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *openURLSchemes;
 
 @end

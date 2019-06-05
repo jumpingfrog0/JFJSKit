@@ -1,5 +1,5 @@
 //
-//  JFJSKitRCTExtension.m
+//  RCTBridge+JFJSKitPlugin.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,39 +25,20 @@
 //  THE SOFTWARE.
 //
 
-#import "JFJSKitRCTExtension.h"
-#import "JFJSAPIRCTRequest.h"
-#import "RCTBridge+JFJSKitExtension.h"
-#import "JFJSKitExtension.h"
-#import <React/RCTBridge+Private.h>
-#import <React/RCTRootView.h>
+#import <React/RCTBridge.h>
 
-@interface JFJSKitRCTExtension ()<RCTBridgeModule>
+@class RCTRootView;
+@class JFJSKitPlugin;
 
-@end
+@interface RCTBridge (JFJSKitPlugin)
 
-@implementation JFJSKitRCTExtension
-@synthesize bridge = _bridge;
+/**
+ * Current visible RCTRootView
+ */
+@property (nonatomic, weak) RCTRootView *jf_jskit_rctRootView;
 
-- (dispatch_queue_t)methodQueue {
-    return dispatch_get_main_queue();
-}
+@property (nonatomic, copy) NSArray<__kindof RCTRootView *> *jf_jskit_rctRootViewStack;
 
-RCT_EXPORT_MODULE(JudaoJsBridge);
-
-RCT_EXPORT_METHOD(sendPromiseProtocol
-                  : (NSString *)protocolUrl resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-    RCTBridge *rootViewBridge = [self.bridge parentBridge];
-
-    JFJSAPIRCTRequest *rctRequest = [[JFJSAPIRCTRequest alloc] init];
-    rctRequest.url                 = [NSURL URLWithString:protocolUrl];
-    rctRequest.resolver            = resolve;
-    rctRequest.view                = rootViewBridge.jf_jskit_rctRootView;
-    rctRequest.viewController      = rootViewBridge.jf_jskit_rctRootView.reactViewController;
-
-    [rootViewBridge.jf_jskit_extension handleRequest:rctRequest];
-}
+@property (nonatomic, strong) JFJSKitPlugin *jf_jskit_extension;
 
 @end

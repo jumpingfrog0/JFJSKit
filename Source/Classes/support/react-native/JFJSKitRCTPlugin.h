@@ -1,5 +1,5 @@
 //
-//  WKWebView+JFJSKitExtension_jsInject.h
+//  JFJSKitRCTPlugin.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -26,11 +26,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <WebKit/WebKit.h>
 
-@interface WKWebView (JFJSKitExtension_jsInject)
-
-@property (nonatomic, strong) NSURL *jf_jskit_jsURL;
-@property (nonatomic, copy) NSURL* (^jf_jskit_jsURLBlock)(NSURL *);
+@interface JFJSKitRCTPlugin : NSObject
 
 @end

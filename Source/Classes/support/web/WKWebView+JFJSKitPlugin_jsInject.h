@@ -1,5 +1,5 @@
 //
-//  JFJSKitExtension.h
+//  WKWebView+JFJSKitExtension_jsInject.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,19 +25,12 @@
 //  THE SOFTWARE.
 //
 
-#import "JFJSAPIService.h"
-#import "JFJSKitExtensionConfig.h"
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
-@class WKWebView;
-@class WKNavigationAction;
+@interface WKWebView (JFJSKitPlugin_jsInject)
 
-@interface JFJSKitExtension : NSObject
-
-@property (nonatomic, strong) JFJSAPIService *apiService;
-@property (nonatomic, strong) JFJSKitExtensionConfig *config;
-
-- (BOOL)handleRequest:(id<JFJSAPIRequestProtocol>)request;
+@property (nonatomic, strong) NSURL *jf_jskit_jsURL;
+@property (nonatomic, copy) NSURL* (^jf_jskit_jsURLBlock)(NSURL *);
 
 @end

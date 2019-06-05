@@ -1,5 +1,5 @@
 //
-//  JFJSKitExtensionConfig.m
+//  JFJSKitPlugin.m
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -25,12 +25,36 @@
 //  THE SOFTWARE.
 //
 
-#import "JFJSKitExtensionConfig.h"
 
-@interface JFJSKitExtensionConfig ()
+#import "JFJSKitPlugin.h"
 
-@end
+@implementation JFJSKitPlugin
 
-@implementation JFJSKitExtensionConfig
+- (BOOL)_allowScheme:(NSString *)scheme {
+    return [scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]
+            || [self.config.allowSchemes containsObject:scheme];
+}
+
+- (BOOL)handleRequest:(id<JFJSAPIRequestProtocol>)request {
+    NSString *scheme = request.url.scheme ?: @"";
+
+    if ([self _allowScheme:scheme]) {
+        return [self.apiService sendRequest:request];
+    }
+
+    BOOL allowScheme = [self.config.openURLSchemes[scheme] boolValue];
+    if (allowScheme) {
+        UIApplication *app = [UIApplication sharedApplication];
+        if ([app canOpenURL:request.url]) {
+            if (@available(iOS 10, *)) {
+                [app openURL:request.url options:@{} completionHandler:nil];
+            } else {
+                [app openURL:request.url];
+            }
+        }
+    }
+
+    return NO;
+}
 
 @end
