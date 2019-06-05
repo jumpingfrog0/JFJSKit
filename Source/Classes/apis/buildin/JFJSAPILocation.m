@@ -28,7 +28,7 @@
 #import "JFJSAPILocation.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface JFJSAPILocation ()<CLLocationManagerDelegate>
+@interface JFJSAPILocation () <CLLocationManagerDelegate>
 
 @property (nonatomic, assign, getter=isLocating) BOOL locating;
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -39,16 +39,14 @@
 
 @implementation JFJSAPILocation
 
-+ (NSString *)command
-{
++ (NSString *)command {
     return @"get_location";
 }
 
-- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
-{
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
     self.completion = completion;
 
-    __weak JFJSAPILocation *weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [self checkLocationServicePermission:^(BOOL valid) {
         if (valid) {
             if (!weakSelf.isLocating) {
@@ -60,27 +58,27 @@
 }
 
 #pragma mark-- location
-- (void)locateSuccess:(CLLocation *)location
-{
-    // test the age of the location measurement to determine if the measurement is cached
+
+- (void)locateSuccess:(CLLocation *)location {
+    // check the age of the location measurement to determine if the measurement is cached
     // in most cases you will not want to rely on cached measurements
     NSTimeInterval locationAge = -[location.timestamp timeIntervalSinceNow];
     if (locationAge > 30.0) return;
 
-    // test that the horizontal accuracy does not indicate an invalid measurement
+    // check that the horizontal accuracy does not indicate an invalid measurement
     if (location.horizontalAccuracy < 0) {
         return;
     }
 
     NSDictionary *result = @{
-        @"longitude": @(location.coordinate.longitude),
-        @"latitude": @(location.coordinate.latitude),
+            @"longitude": @(location.coordinate.longitude),
+            @"latitude": @(location.coordinate.latitude),
     };
 
     self.locating = NO;
     [self.locationManager stopUpdatingLocation];
     self.locationManager.delegate = nil;
-    self.locationManager          = nil;
+    self.locationManager = nil;
 
     [self.request onSuccess:result];
 
@@ -89,18 +87,17 @@
     }
 }
 
-- (void)locateFailed
-{
-    NSString *errorDescription = @"获取定位失败";
-    NSDictionary *result       = @{
-        @"code": @(0),
-        @"msg": errorDescription,
+- (void)locateFailed {
+    NSString *errorDescription = @"Locate failed.";
+    NSDictionary *result = @{
+            @"code": @(-1),
+            @"msg": errorDescription,
     };
 
     self.locating = NO;
     [self.locationManager stopUpdatingLocation];
     self.locationManager.delegate = nil;
-    self.locationManager          = nil;
+    self.locationManager = nil;
 
     [self.request onFailure:result];
 
@@ -111,38 +108,36 @@
 
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation
-{
+           fromLocation:(CLLocation *)oldLocation {
     [self locateSuccess:newLocation];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
-{
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     [self locateSuccess:locations.lastObject];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     [self locateFailed];
 }
 
 #pragma mark--
-- (void)checkLocationServicePermission:(void (^)(BOOL))block
-{
-    __weak JFJSAPILocation *weakSelf = self;
-    void (^alert)()                   = ^{
-        NSString *title              = @"";
-        NSString *message            = @"";
+
+- (void)checkLocationServicePermission:(void (^)(BOOL))block {
+    __weak typeof(self) weakSelf = self;
+    void (^alert)() = ^{
+        NSString *title = @"Location";
+        NSString *message = @"Please enable location services in the Settings -> Privacy";
         UIAlertControllerStyle style = UIAlertControllerStyleAlert;
         UIAlertController *ac = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:style];
 
         UIAlertActionStyle cancelStyle = UIAlertActionStyleCancel;
-        UIAlertAction *cancel          = [UIAlertAction actionWithTitle:@"取消" style:cancelStyle handler:nil];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:cancelStyle handler:nil];
 
         UIAlertActionStyle defaultStyle = UIAlertActionStyleDefault;
-        UIAlertAction *confirm          = [UIAlertAction actionWithTitle:@"确认删除"
+        UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK"
                                                           style:defaultStyle
-                                                        handler:^(UIAlertAction *_Nonnull action){
+                                                        handler:^(UIAlertAction *_Nonnull action) {
+            // todo: open settings
                                                         }];
         [ac addAction:cancel];
         [ac addAction:confirm];
@@ -169,8 +164,7 @@
     }
 }
 
-- (CLLocationManager *)locationManager
-{
+- (CLLocationManager *)locationManager {
     if (!_locationManager) {
         _locationManager = [[CLLocationManager alloc] init];
         [_locationManager setDelegate:self];

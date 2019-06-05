@@ -41,20 +41,17 @@ static char kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex;
 
 @implementation WKWebView (JFJSAPIHistoryCleaner)
 
-+ (void)load
-{
++ (void)load {
     [self jf_jsapi_historyCleaner_hookCanGoBack];
 }
 
-+ (void)jf_jsapi_historyCleaner_hookCanGoBack
-{
++ (void)jf_jsapi_historyCleaner_hookCanGoBack {
     SEL originalSelector = @selector(canGoBack);
     SEL swizzledSelector = @selector(jf_jsapi_historyCleaner_canGoBack);
     [self jf_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
 }
 
-- (BOOL)jf_jsapi_historyCleaner_canGoBack
-{
+- (BOOL)jf_jsapi_historyCleaner_canGoBack {
     if (self.jf_jsapi_historyCleaner_clearIndex > 0) {
         if (self.jf_jsapi_historyCleaner_clearIndex >= self.backForwardList.backList.count) {
             return NO;
@@ -64,17 +61,15 @@ static char kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex;
     return [self jf_jsapi_historyCleaner_canGoBack];
 }
 
-- (NSInteger)jf_jsapi_historyCleaner_clearIndex
-{
+- (NSInteger)jf_jsapi_historyCleaner_clearIndex {
     id clearIndex = objc_getAssociatedObject(self, &kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex);
     return [clearIndex integerValue];
 }
 
-- (void)setJf_jsapi_historyCleaner_clearIndex:(NSInteger)index
-{
+- (void)setJf_jsapi_historyCleaner_clearIndex:(NSInteger)index {
     if (self.jf_jsapi_historyCleaner_clearIndex != index) {
         objc_setAssociatedObject(
-            self, &kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex, @(index), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                self, &kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex, @(index), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
@@ -86,14 +81,12 @@ static char kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex;
 
 @implementation JFJSAPIHistoryCleaner
 
-+ (NSString *)command
-{
++ (NSString *)command {
     return @"clear_history";
 }
 
-- (void)webRunOnCompletion:(JFJSAPICompletionBlock)completion
-{
-    WKWebView *wv                          = (WKWebView *)self.request.view;
+- (void)webRunOnCompletion:(JFJSAPICompletionBlock)completion {
+    WKWebView *wv = (WKWebView *) self.request.view;
     wv.jf_jsapi_historyCleaner_clearIndex = wv.backForwardList.backList.count;
 
     [self.request onSuccess:nil];
@@ -103,9 +96,8 @@ static char kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex;
     }
 }
 
-- (void)rctRunOnCompletion:(JFJSAPICompletionBlock)completion
-{
-    JFLogWarning(@"%@ 不支持 react-native", self.request.url);
+- (void)rctRunOnCompletion:(JFJSAPICompletionBlock)completion {
+    JFLogWarning(@"%@ Does not support react-native", self.request.url);
 }
 
 @end

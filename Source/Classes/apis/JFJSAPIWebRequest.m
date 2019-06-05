@@ -59,6 +59,8 @@
 
     NSString *msg = [result jf_jsapi_jsSuccess];
     NSString *js  = [self.url jf_jsapi_jsEvaluationWith:msg];
+
+    // callback to webview
     [self evaluateJavaScript:js];
 }
 
@@ -70,6 +72,8 @@
 
     NSString *msg = [result jf_jsapi_jsError];
     NSString *js  = [self.url jf_jsapi_jsEvaluationWith:msg];
+
+    // callback to webview
     [self evaluateJavaScript:js];
 }
 
@@ -90,7 +94,7 @@
 
     WKWebView *wv = (WKWebView *)self.view;
     [wv evaluateJavaScript:js
-         completionHandler:^(id s, NSError *error) {
+         completionHandler:^(id obj, NSError *error) {
              if (error) {
                  JFLogError(@"Evaluate js failed. js: %@ , error: %@", js, error);
              }

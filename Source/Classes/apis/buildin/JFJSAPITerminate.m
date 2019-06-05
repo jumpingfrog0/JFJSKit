@@ -34,14 +34,13 @@
 }
 
 - (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
-    if (![self.request.viewController isKindOfClass:UIViewController.class]) {
-        [self.request.view removeFromSuperview];
+    if (self.request.viewController.presentingViewController) {
+        [self.request.viewController dismissViewControllerAnimated:YES completion:nil];
     } else if (self.request.viewController.navigationController.viewControllers.count > 1) {
         [self.request.viewController.navigationController popViewControllerAnimated:YES];
-    } else {
-        if (self.request.viewController.presentingViewController) {
-            [self.request.viewController dismissViewControllerAnimated:YES completion:nil];
-        }
+    } else if (![self.request.viewController isKindOfClass:UIViewController.class]) {
+        [self.request.view removeFromSuperview];
+        [self.request.viewController removeFromParentViewController];
     }
 
     [self.request onSuccess:nil];

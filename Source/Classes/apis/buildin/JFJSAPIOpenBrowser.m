@@ -26,6 +26,7 @@
 //
 
 #import "JFJSAPIOpenBrowser.h"
+#import <UIKit/UIKit.h>
 
 @implementation JFJSAPIOpenBrowser
 
@@ -37,7 +38,18 @@
 - (void)runOnCompletion:(JFJSAPICompletionBlock)completion
 {
     NSURL *url = [NSURL URLWithString:self.request.options[@"url"]];
-    if (url) {
+
+    if (![[UIApplication sharedApplication] canOpenURL:url]) {
+        [self.request onFailure:nil];
+        if (completion) {
+            completion();
+        }
+        return;
+    }
+
+    if (@available(iOS 10, *)) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+    } else {
         [[UIApplication sharedApplication] openURL:url];
     }
 

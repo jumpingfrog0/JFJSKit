@@ -28,7 +28,7 @@
 #import "JFJSAPIHookWebView.h"
 #import "WKWebView+JFJSKitExtension.h"
 
-@interface JFJSAPIHookWebView ()<WKNavigationDelegate>
+@interface JFJSAPIHookWebView () <WKNavigationDelegate>
 
 @property (nonatomic, copy) JFJSAPICompletionBlock completion;
 
@@ -38,22 +38,20 @@
 
 @implementation JFJSAPIHookWebView
 
-+ (NSString *)command
-{
++ (NSString *)command {
     return @"open_background";
 }
 
-- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
-{
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
     self.completion = completion;
 
     NSURL *URL = [NSURL URLWithString:self.request.options[@"url"]];
     self.jsURL = [NSURL URLWithString:self.request.options[@"js_url"]];
 
     if (self.jsURL) {
-        WKWebView *wv         = [[WKWebView alloc] initWithFrame:CGRectZero];
+        WKWebView *wv = [[WKWebView alloc] initWithFrame:CGRectZero];
         wv.navigationDelegate = self;
-        NSURLRequest *req     = [[NSURLRequest alloc] initWithURL:URL];
+        NSURLRequest *req = [[NSURLRequest alloc] initWithURL:URL];
         [wv loadRequest:req];
 
         [self.request.view addSubview:wv];
@@ -66,29 +64,29 @@
 }
 
 #pragma mark--
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
-{
-    __weak WKWebView *weakWV             = webView;
-    __weak JFJSAPIHookWebView *weakSelf = self;
-    [webView jf_jskit_evaluateJavaScriptWithURL:self.jsURL
-                               completionHandler:^(id o, NSError *error) {
-                                   [weakWV removeFromSuperview];
-                                   if (error) {
-                                       [weakSelf.request onFailure:@{
-                                           @"msg": error.localizedDescription,
-                                           @"code": @(error.code),
-                                       }];
 
-                                       if (weakSelf.completion) {
-                                           weakSelf.completion();
-                                       }
-                                   } else {
-                                       [weakSelf.request onSuccess:nil];
-                                       if (weakSelf.completion) {
-                                           weakSelf.completion();
-                                       }
-                                   }
-                               }];
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    __weak WKWebView *weakWV = webView;
+    __weak typeof(self) weakSelf = self;
+    [webView jf_jskit_evaluateJavaScriptWithURL:self.jsURL
+                              completionHandler:^(id js, NSError *error) {
+                                  [weakWV removeFromSuperview];
+                                  if (error) {
+                                      [weakSelf.request onFailure:@{
+                                              @"msg": error.localizedDescription,
+                                              @"code": @(error.code),
+                                      }];
+
+                                      if (weakSelf.completion) {
+                                          weakSelf.completion();
+                                      }
+                                  } else {
+                                      [weakSelf.request onSuccess:nil];
+                                      if (weakSelf.completion) {
+                                          weakSelf.completion();
+                                      }
+                                  }
+                              }];
 }
 
 @end
