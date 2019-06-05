@@ -30,13 +30,11 @@
 
 @implementation JFJSAPIOpenURL
 
-+ (NSString *)command
-{
++ (NSString *)command {
     return @"open_scheme";
 }
 
-- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
-{
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
     NSURL *url = [NSURL URLWithString:self.request.options[@"url"]];
 
     if (![[UIApplication sharedApplication] canOpenURL:url]) {

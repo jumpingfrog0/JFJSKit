@@ -137,7 +137,7 @@
         UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK"
                                                           style:defaultStyle
                                                         handler:^(UIAlertAction *_Nonnull action) {
-            // todo: open settings
+                                                            // todo: open settings
                                                         }];
         [ac addAction:cancel];
         [ac addAction:confirm];

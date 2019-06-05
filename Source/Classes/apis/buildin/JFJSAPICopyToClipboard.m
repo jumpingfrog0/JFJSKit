@@ -31,13 +31,11 @@
 
 @implementation JFJSAPICopyToClipboard
 
-+ (NSString *)command
-{
++ (NSString *)command {
     return @"copy_to_clipboard";
 }
 
-- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
-{
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
     NSString *text = self.request.options[@"text"];
     if (text.length > 0) {
         [UIPasteboard generalPasteboard].string = text;

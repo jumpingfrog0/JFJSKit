@@ -29,13 +29,11 @@
 
 @implementation JFJSAPIChangeTitle
 
-+ (NSString *)command
-{
++ (NSString *)command {
     return @"change_title";
 }
 
-- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
-{
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
     NSString *title = self.request.options[@"title"];
     [self.request.viewController setTitle:title];
 

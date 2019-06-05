@@ -30,13 +30,11 @@
 
 @implementation JFJSAPIOpenBrowser
 
-+ (NSString *)command
-{
++ (NSString *)command {
     return @"open_in_browser";
 }
 
-- (void)runOnCompletion:(JFJSAPICompletionBlock)completion
-{
+- (void)runOnCompletion:(JFJSAPICompletionBlock)completion {
     NSURL *url = [NSURL URLWithString:self.request.options[@"url"]];
 
     if (![[UIApplication sharedApplication] canOpenURL:url]) {
