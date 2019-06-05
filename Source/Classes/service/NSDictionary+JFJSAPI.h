@@ -29,7 +29,7 @@
 
 @interface NSDictionary (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsSuccess;
-- (NSString *)mzd_jsapi_jsError;
+- (NSString *)jf_jsapi_jsSuccess;
+- (NSString *)jf_jsapi_jsError;
 
 @end

@@ -47,7 +47,7 @@
     if (_url != url) {
         _url = url;
 
-        self.options = [url mzd_jsapi_parameters];
+        self.options = [url jf_jsapi_parameters];
     }
 }
 
@@ -57,8 +57,8 @@
         result = @{};
     }
 
-    NSString *msg = [result mzd_jsapi_jsSuccess];
-    NSString *js  = [self.url mzd_jsapi_jsEvaluationWith:msg];
+    NSString *msg = [result jf_jsapi_jsSuccess];
+    NSString *js  = [self.url jf_jsapi_jsEvaluationWith:msg];
     [self evaluateJavaScript:js];
 }
 
@@ -68,8 +68,8 @@
         result = @{};
     }
 
-    NSString *msg = [result mzd_jsapi_jsError];
-    NSString *js  = [self.url mzd_jsapi_jsEvaluationWith:msg];
+    NSString *msg = [result jf_jsapi_jsError];
+    NSString *js  = [self.url jf_jsapi_jsEvaluationWith:msg];
     [self evaluateJavaScript:js];
 }
 

@@ -44,7 +44,7 @@
     if (_url != url) {
         _url = url;
 
-        self.options = [url mzd_jsapi_parameters];
+        self.options = [url jf_jsapi_parameters];
     }
 }
 
@@ -53,7 +53,7 @@
         if (!result) {
             result = @{};
         }
-        self.resolver([result mzd_jsapi_jsSuccess]);
+        self.resolver([result jf_jsapi_jsSuccess]);
     }
 }
 
@@ -62,7 +62,7 @@
         if (!result) {
             result = @{};
         }
-        self.resolver([result mzd_jsapi_jsError]);
+        self.resolver([result jf_jsapi_jsError]);
     }
 }
 

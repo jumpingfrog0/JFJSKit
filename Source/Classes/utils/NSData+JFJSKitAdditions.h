@@ -29,6 +29,6 @@
 
 @interface NSData (JFJSKitAdditions)
 
-- (NSString *)mzd_jskit_md5;
+- (NSString *)jf_jskit_md5;
 
 @end

@@ -28,6 +28,5 @@
 #import <Foundation/Foundation.h>
 #import "JFJSAPIBase.h"
 
-
 @interface JFJSAPICopyToClipboard : JFJSAPIBase
 @end

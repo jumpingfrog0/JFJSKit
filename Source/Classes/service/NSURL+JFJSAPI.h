@@ -29,10 +29,10 @@
 
 @interface NSURL (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsEvaluationWith:(NSString *)msg;
+- (NSString *)jf_jsapi_jsEvaluationWith:(NSString *)msg;
 
-- (NSDictionary *)mzd_jsapi_parameters;
-- (NSString *)mzd_jsapi_callback;
-- (NSString *)mzd_jsapi_flag;
+- (NSDictionary *)jf_jsapi_parameters;
+- (NSString *)jf_jsapi_callback;
+- (NSString *)jf_jsapi_flag;
 
 @end

@@ -31,31 +31,31 @@
 
 @implementation NSURL (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsEvaluationWith:(NSString *)msg
+- (NSString *)jf_jsapi_jsEvaluationWith:(NSString *)msg
 {
-    NSString *jsFunction = [self mzd_jsapi_callback];
-    NSString *jsFlag     = [self mzd_jsapi_flag];
+    NSString *jsFunction = [self jf_jsapi_callback];
+    NSString *jsFlag     = [self jf_jsapi_flag];
     if (jsFunction && jsFlag) {
         return [NSString stringWithFormat:@"javascript:%@(\"%@\", \"%@\")", jsFunction, jsFlag, msg];
     }
     return nil;
 }
 
-- (NSDictionary *)mzd_jsapi_parameters
+- (NSDictionary *)jf_jsapi_parameters
 {
-    NSString *json = [self mzd_jskit_parameters][@"params"];
-    json           = [json mzd_jskit_stringByUnescapingFromURLArgument];
-    return [json mzd_jskit_JSONObject];
+    NSString *json = [self jf_jskit_parameters][@"params"];
+    json           = [json jf_jskit_stringByUnescapingFromURLArgument];
+    return [json jf_jskit_JSONObject];
 }
 
-- (NSString *)mzd_jsapi_callback
+- (NSString *)jf_jsapi_callback
 {
-    return [self mzd_jskit_parameters][@"callback"];
+    return [self jf_jskit_parameters][@"callback"];
 }
 
-- (NSString *)mzd_jsapi_flag
+- (NSString *)jf_jsapi_flag
 {
-    return [self mzd_jskit_parameters][@"flag"];
+    return [self jf_jskit_parameters][@"flag"];
 }
 
 @end

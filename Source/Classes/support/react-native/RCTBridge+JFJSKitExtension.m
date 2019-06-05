@@ -36,41 +36,41 @@ static char kJFRCTBridgeProperty_jskit_rctRootViewStack;
 
 @implementation RCTBridge (JFJSKitExtension)
 
-- (JFJSKitExtension *)mzd_jskit_extension {
+- (JFJSKitExtension *)jf_jskit_extension {
     return objc_getAssociatedObject(self, &kJFRCTBridgeProperty_jskit_extension);
 }
 
-- (void)setMzd_jskit_extension:(JFJSKitExtension *)extension {
-    if (self.mzd_jskit_extension != extension) {
+- (void)setJf_jskit_extension:(JFJSKitExtension *)extension {
+    if (self.jf_jskit_extension != extension) {
         objc_setAssociatedObject(
             self, &kJFRCTBridgeProperty_jskit_extension, extension, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
-- (RCTRootView *)mzd_jskit_rctRootView {
+- (RCTRootView *)jf_jskit_rctRootView {
     return objc_getAssociatedObject(self, &kJFRCTBridgeProperty_jskit_rctRootView);
 }
 
-- (void)setMzd_jskit_rctRootView:(RCTRootView *)rootView {
-    if (self.mzd_jskit_rctRootView != rootView) {
+- (void)setJf_jskit_rctRootView:(RCTRootView *)rootView {
+    if (self.jf_jskit_rctRootView != rootView) {
         objc_setAssociatedObject(
             self, &kJFRCTBridgeProperty_jskit_rctRootView, rootView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if (rootView != self.mzd_jskit_rctRootViewStack.lastObject) {
-            NSMutableArray *stack = [self.mzd_jskit_rctRootViewStack mutableCopy];
+        if (rootView != self.jf_jskit_rctRootViewStack.lastObject) {
+            NSMutableArray *stack = [self.jf_jskit_rctRootViewStack mutableCopy];
             [stack addObject:rootView];
-            [self setMzd_jskit_rctRootViewStack:stack];
+            [self setJf_jskit_rctRootViewStack:stack];
         }
     }
 }
 
-- (NSArray<__kindof RCTRootView *> *)mzd_jskit_rctRootViewStack {
+- (NSArray<__kindof RCTRootView *> *)jf_jskit_rctRootViewStack {
     return objc_getAssociatedObject(self, &kJFRCTBridgeProperty_jskit_rctRootViewStack);
 }
 
-- (void)setMzd_jskit_rctRootViewStack:(NSArray<__kindof RCTRootView *> *)stack {
-    if (self.mzd_jskit_rctRootViewStack != stack) {
+- (void)setJf_jskit_rctRootViewStack:(NSArray<__kindof RCTRootView *> *)stack {
+    if (self.jf_jskit_rctRootViewStack != stack) {
         objc_setAssociatedObject(self, &kJFRCTBridgeProperty_jskit_rctRootViewStack, stack, OBJC_ASSOCIATION_COPY_NONATOMIC);
-        [self setMzd_jskit_rctRootView:stack.lastObject];
+        [self setJf_jskit_rctRootView:stack.lastObject];
     }
 }
 

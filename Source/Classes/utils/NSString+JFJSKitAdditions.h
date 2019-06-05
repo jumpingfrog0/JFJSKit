@@ -29,12 +29,12 @@
 
 @interface NSString (JFJSKitAdditions)
 
-- (id)mzd_jskit_JSONObject;
-+ (NSString *)mzd_jskit_stringWithJSONObject:(id)object;
+- (id)jf_jskit_JSONObject;
++ (NSString *)jf_jskit_stringWithJSONObject:(id)object;
 
-- (NSString *)mzd_jskit_stringByEscapingForURLArgument;
-- (NSString *)mzd_jskit_stringByUnescapingFromURLArgument;
+- (NSString *)jf_jskit_stringByEscapingForURLArgument;
+- (NSString *)jf_jskit_stringByUnescapingFromURLArgument;
 
-- (NSString *)mzd_jskit_md5;
+- (NSString *)jf_jskit_md5;
 
 @end

@@ -31,7 +31,7 @@
 
 @implementation NSData (JFJSKitAdditions)
 
-- (NSString *)mzd_jskit_md5 {
+- (NSString *)jf_jskit_md5 {
     // Create byte array of unsigned chars
     unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
 

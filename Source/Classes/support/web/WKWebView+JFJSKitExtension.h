@@ -32,9 +32,9 @@
 
 @interface WKWebView (JFJSKitExtension)
 
-@property (nonatomic, strong) JFJSKitExtension *mzd_jskit_extension;
+@property (nonatomic, strong) JFJSKitExtension *jf_jskit_extension;
 
-- (void)mzd_jskit_addCustomUserAgent:(NSString *)userAgent;
-- (void)mzd_jskit_evaluateJavaScriptWithURL:(NSURL *)url completionHandler:(void (^)(id result, NSError *error))handler;
+- (void)jf_jskit_addCustomUserAgent:(NSString *)userAgent;
+- (void)jf_jskit_evaluateJavaScriptWithURL:(NSURL *)url completionHandler:(void (^)(id result, NSError *error))handler;
 
 @end

@@ -30,7 +30,7 @@
 
 
 @implementation NSObject (JFJSKitAdditions)
-- (void)mzd_jskit_hookSelector:(SEL)originalSelector
+- (void)jf_jskit_hookSelector:(SEL)originalSelector
     withDefaultImplementSelector:(SEL)defaultSelector
                 swizzledSelector:(SEL)swizzledSelector
                         forClass:(Class)aClass;
@@ -68,7 +68,7 @@
     }
 }
 
-+ (void)mzd_jskit_changeSelector:(SEL)sel withSelector:(SEL)swizzledSel
++ (void)jf_jskit_changeSelector:(SEL)sel withSelector:(SEL)swizzledSel
 {
     Method originalMethod = class_getInstanceMethod(self, sel);
     Method swizzledMethod = class_getInstanceMethod(self, swizzledSel);
@@ -84,7 +84,7 @@
     }
 }
 
-- (id)mzd_jskit_performSelector:(SEL)sel withObjects:(NSArray *)objects
+- (id)jf_jskit_performSelector:(SEL)sel withObjects:(NSArray *)objects
 {
     // 方法签名(方法的描述)
     NSMethodSignature *signature = [[self class] instanceMethodSignatureForSelector:sel];

@@ -32,8 +32,8 @@
 
 @interface RCTBridge (JFJSKitExtension)
 
-@property (nonatomic, weak)   RCTRootView *mzd_jskit_rctRootView;
-@property(nonatomic, copy) NSArray<__kindof RCTRootView *> *mzd_jskit_rctRootViewStack;
-@property (nonatomic, strong) JFJSKitExtension *mzd_jskit_extension;
+@property (nonatomic, weak)   RCTRootView *jf_jskit_rctRootView;
+@property(nonatomic, copy) NSArray<__kindof RCTRootView *> *jf_jskit_rctRootViewStack;
+@property (nonatomic, strong) JFJSKitExtension *jf_jskit_extension;
 
 @end

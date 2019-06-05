@@ -29,12 +29,12 @@
 
 @interface NSObject (JFJSKitAdditions)
 
-- (void)mzd_jskit_hookSelector:(SEL)originalSelector
+- (void)jf_jskit_hookSelector:(SEL)originalSelector
     withDefaultImplementSelector:(SEL)defaultSelector
                 swizzledSelector:(SEL)swizzledSelector
                         forClass:(Class)aClass;
 
-+ (void)mzd_jskit_changeSelector:(SEL)sel withSelector:(SEL)swizzledSel;
-- (id)mzd_jskit_performSelector:(SEL)sel withObjects:(NSArray *)objects;
++ (void)jf_jskit_changeSelector:(SEL)sel withSelector:(SEL)swizzledSel;
+- (id)jf_jskit_performSelector:(SEL)sel withObjects:(NSArray *)objects;
 
 @end

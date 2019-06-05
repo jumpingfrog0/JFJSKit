@@ -30,7 +30,7 @@
 
 @implementation NSDictionary (JFJSKitAdditions)
 
-- (NSString *)mzd_jskit_joinURLQueries
+- (NSString *)jf_jskit_joinURLQueries
 {
     if (self.allKeys.count > 0) {
         NSEnumerator *keyEnumerator = [self keyEnumerator];

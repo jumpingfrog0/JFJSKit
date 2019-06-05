@@ -35,7 +35,7 @@ static char kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex;
 
 @interface WKWebView (JFJSAPIHistoryCleaner)
 
-@property (nonatomic, assign) NSInteger mzd_jsapi_historyCleaner_clearIndex;
+@property (nonatomic, assign) NSInteger jf_jsapi_historyCleaner_clearIndex;
 
 @end
 
@@ -43,36 +43,36 @@ static char kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex;
 
 + (void)load
 {
-    [self mzd_jsapi_historyCleaner_hookCanGoBack];
+    [self jf_jsapi_historyCleaner_hookCanGoBack];
 }
 
-+ (void)mzd_jsapi_historyCleaner_hookCanGoBack
++ (void)jf_jsapi_historyCleaner_hookCanGoBack
 {
     SEL originalSelector = @selector(canGoBack);
-    SEL swizzledSelector = @selector(mzd_jsapi_historyCleaner_canGoBack);
-    [self mzd_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
+    SEL swizzledSelector = @selector(jf_jsapi_historyCleaner_canGoBack);
+    [self jf_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
 }
 
-- (BOOL)mzd_jsapi_historyCleaner_canGoBack
+- (BOOL)jf_jsapi_historyCleaner_canGoBack
 {
-    if (self.mzd_jsapi_historyCleaner_clearIndex > 0) {
-        if (self.mzd_jsapi_historyCleaner_clearIndex >= self.backForwardList.backList.count) {
+    if (self.jf_jsapi_historyCleaner_clearIndex > 0) {
+        if (self.jf_jsapi_historyCleaner_clearIndex >= self.backForwardList.backList.count) {
             return NO;
         }
     }
 
-    return [self mzd_jsapi_historyCleaner_canGoBack];
+    return [self jf_jsapi_historyCleaner_canGoBack];
 }
 
-- (NSInteger)mzd_jsapi_historyCleaner_clearIndex
+- (NSInteger)jf_jsapi_historyCleaner_clearIndex
 {
     id clearIndex = objc_getAssociatedObject(self, &kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex);
     return [clearIndex integerValue];
 }
 
-- (void)setMzd_jsapi_historyCleaner_clearIndex:(NSInteger)index
+- (void)setJf_jsapi_historyCleaner_clearIndex:(NSInteger)index
 {
-    if (self.mzd_jsapi_historyCleaner_clearIndex != index) {
+    if (self.jf_jsapi_historyCleaner_clearIndex != index) {
         objc_setAssociatedObject(
             self, &kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex, @(index), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
@@ -94,7 +94,7 @@ static char kJFWKWebViewProperty_jsapi_historyCleaner_clearIndex;
 - (void)webRunOnCompletion:(JFJSAPICompletionBlock)completion
 {
     WKWebView *wv                          = (WKWebView *)self.request.view;
-    wv.mzd_jsapi_historyCleaner_clearIndex = wv.backForwardList.backList.count;
+    wv.jf_jsapi_historyCleaner_clearIndex = wv.backForwardList.backList.count;
 
     [self.request onSuccess:nil];
 

@@ -30,7 +30,7 @@
 
 @interface WKWebView (JFJSKitExtension_jsInject)
 
-@property (nonatomic, strong) NSURL *mzd_jskit_jsURL;
-@property (nonatomic, copy) NSURL* (^mzd_jskit_jsURLBlock)(NSURL *);
+@property (nonatomic, strong) NSURL *jf_jskit_jsURL;
+@property (nonatomic, copy) NSURL* (^jf_jskit_jsURLBlock)(NSURL *);
 
 @end

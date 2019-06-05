@@ -35,25 +35,25 @@ static char kJFWKWebViewProperty_jskit_extension;
 
 @implementation WKWebView (JFJSKitExtension)
 + (void)load {
-    [self mzd_jskit_extension_hookNavigationDelegate];
-    [self mzd_jskit_extension_hookUIDelegate];
+    [self jf_jskit_extension_hookNavigationDelegate];
+    [self jf_jskit_extension_hookUIDelegate];
 }
 #pragma mark-- HookNaivationDelegate
-+ (void)mzd_jskit_extension_hookNavigationDelegate {
++ (void)jf_jskit_extension_hookNavigationDelegate {
     SEL originalSelector = @selector(setNavigationDelegate:);
-    SEL swizzledSelector = @selector(mzd_jskit_extension_setNavigationDelegate:);
+    SEL swizzledSelector = @selector(jf_jskit_extension_setNavigationDelegate:);
 
-    [self mzd_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
+    [self jf_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
 }
 
-- (void)mzd_jskit_extension_setNavigationDelegate:(id<WKNavigationDelegate>)delegate {
+- (void)jf_jskit_extension_setNavigationDelegate:(id<WKNavigationDelegate>)delegate {
     Class aClass = [delegate class];
 
     SEL originalSelector = @selector(webView:decidePolicyForNavigationAction:decisionHandler:);
     SEL defaultSelector =
-        @selector(mzd_jskit_extension_default_webView:decidePolicyForNavigationAction:decisionHandler:);
-    SEL swizzledSelector = @selector(mzd_jskit_extension_webView:decidePolicyForNavigationAction:decisionHandler:);
-    [self mzd_jskit_hookSelector:originalSelector
+        @selector(jf_jskit_extension_default_webView:decidePolicyForNavigationAction:decisionHandler:);
+    SEL swizzledSelector = @selector(jf_jskit_extension_webView:decidePolicyForNavigationAction:decisionHandler:);
+    [self jf_jskit_hookSelector:originalSelector
         withDefaultImplementSelector:defaultSelector
                     swizzledSelector:swizzledSelector
                             forClass:aClass];
@@ -62,19 +62,19 @@ static char kJFWKWebViewProperty_jskit_extension;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     defaultSelector =
-        @selector(mzd_jskit_extension_default_webView:didReceiveAuthenticationChallenge:completionHandler:);
+        @selector(jf_jskit_extension_default_webView:didReceiveAuthenticationChallenge:completionHandler:);
 #pragma clang diagnostic pop
 
-    swizzledSelector = @selector(mzd_jskit_extension_webView:didReceiveAuthenticationChallenge:completionHandler:);
-    [self mzd_jskit_hookSelector:originalSelector
+    swizzledSelector = @selector(jf_jskit_extension_webView:didReceiveAuthenticationChallenge:completionHandler:);
+    [self jf_jskit_hookSelector:originalSelector
         withDefaultImplementSelector:defaultSelector
                     swizzledSelector:swizzledSelector
                             forClass:aClass];
 
-    [self mzd_jskit_extension_setNavigationDelegate:delegate];
+    [self jf_jskit_extension_setNavigationDelegate:delegate];
 }
 
-- (void)mzd_jskit_extension_webView:(WKWebView *)webView
+- (void)jf_jskit_extension_webView:(WKWebView *)webView
     didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
                     completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition,
                                                 NSURLCredential *credential))completionHandler {
@@ -95,7 +95,7 @@ static char kJFWKWebViewProperty_jskit_extension;
     }
 }
 
-- (void)mzd_jskit_extension_default_webView:(WKWebView *)webView
+- (void)jf_jskit_extension_default_webView:(WKWebView *)webView
             decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
                             decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     if (decisionHandler) {
@@ -103,12 +103,12 @@ static char kJFWKWebViewProperty_jskit_extension;
     }
 }
 
-- (void)mzd_jskit_extension_webView:(WKWebView *)webView
+- (void)jf_jskit_extension_webView:(WKWebView *)webView
     decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
                     decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     id sender = webView.navigationDelegate;
 
-    if (webView.mzd_jskit_extension) {
+    if (webView.jf_jskit_extension) {
 
         JFJSAPIWebRequest *jsApiRequest = [[JFJSAPIWebRequest alloc] init];
         jsApiRequest.url                 = navigationAction.request.URL;
@@ -119,7 +119,7 @@ static char kJFWKWebViewProperty_jskit_extension;
         } else if ([webView.UIDelegate isKindOfClass:UIViewController.class]) {
             jsApiRequest.viewController = (UIViewController *)webView.UIDelegate;
         }
-        BOOL handled = [webView.mzd_jskit_extension handleRequest:jsApiRequest];
+        BOOL handled = [webView.jf_jskit_extension handleRequest:jsApiRequest];
 
         if (handled) {
             if (decisionHandler) {
@@ -129,42 +129,42 @@ static char kJFWKWebViewProperty_jskit_extension;
         }
     }
 
-    SEL sel            = @selector(mzd_jskit_extension_webView:decidePolicyForNavigationAction:decisionHandler:);
+    SEL sel            = @selector(jf_jskit_extension_webView:decidePolicyForNavigationAction:decisionHandler:);
     NSArray *arguments = @[
         webView ?: [NSNull null],
         navigationAction ?: [NSNull null],
         decisionHandler,
     ];
-    [sender mzd_jskit_performSelector:sel withObjects:arguments];
+    [sender jf_jskit_performSelector:sel withObjects:arguments];
 }
 
 #pragma mark-- HookUIDelegate
-+ (void)mzd_jskit_extension_hookUIDelegate {
++ (void)jf_jskit_extension_hookUIDelegate {
     SEL originalSelector = @selector(setUIDelegate:);
-    SEL swizzledSelector = @selector(mzd_jskit_extension_setUIDelegate:);
+    SEL swizzledSelector = @selector(jf_jskit_extension_setUIDelegate:);
 
-    [self mzd_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
+    [self jf_jskit_changeSelector:originalSelector withSelector:swizzledSelector];
 }
 
-- (void)mzd_jskit_extension_setUIDelegate:(id<WKUIDelegate>)delegate {
+- (void)jf_jskit_extension_setUIDelegate:(id<WKUIDelegate>)delegate {
     Class aClass = [delegate class];
     SEL originalSelector =
         @selector(webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:);
     SEL defaultSelector =
-        @selector(mzd_jskit_extension_default_webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame
+        @selector(jf_jskit_extension_default_webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame
                                                      :completionHandler:);
-    SEL swizzledSelector = @selector(mzd_jskit_extension_webView:runJavaScriptTextInputPanelWithPrompt:defaultText
+    SEL swizzledSelector = @selector(jf_jskit_extension_webView:runJavaScriptTextInputPanelWithPrompt:defaultText
                                                                 :initiatedByFrame:completionHandler:);
 
-    [self mzd_jskit_hookSelector:originalSelector
+    [self jf_jskit_hookSelector:originalSelector
         withDefaultImplementSelector:defaultSelector
                     swizzledSelector:swizzledSelector
                             forClass:aClass];
 
-    [self mzd_jskit_extension_setUIDelegate:delegate];
+    [self jf_jskit_extension_setUIDelegate:delegate];
 }
 
-- (void)mzd_jskit_extension_default_webView:(WKWebView *)webView
+- (void)jf_jskit_extension_default_webView:(WKWebView *)webView
       runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt
                                 defaultText:(NSString *)defaultText
                            initiatedByFrame:(WKFrameInfo *)frame
@@ -174,14 +174,14 @@ static char kJFWKWebViewProperty_jskit_extension;
     }
 }
 
-- (void)mzd_jskit_extension_webView:(WKWebView *)webView
+- (void)jf_jskit_extension_webView:(WKWebView *)webView
     runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt
                               defaultText:(NSString *)defaultText
                          initiatedByFrame:(WKFrameInfo *)frame
                         completionHandler:(void (^)(NSString *result))completionHandler {
     id sender = webView.UIDelegate;
 
-    if (webView.mzd_jskit_extension) {
+    if (webView.jf_jskit_extension) {
         JFJSAPIWebRequest *jsApiRequest = [[JFJSAPIWebRequest alloc] init];
         jsApiRequest.url                 = [NSURL URLWithString:prompt];
         jsApiRequest.view                = webView;
@@ -191,7 +191,7 @@ static char kJFWKWebViewProperty_jskit_extension;
         } else if ([webView.navigationDelegate isKindOfClass:UIViewController.class]) {
             jsApiRequest.viewController = (UIViewController *)webView.navigationDelegate;
         }
-        BOOL handled = [webView.mzd_jskit_extension handleRequest:jsApiRequest];
+        BOOL handled = [webView.jf_jskit_extension handleRequest:jsApiRequest];
 
         if (handled) {
             if (completionHandler) {
@@ -201,7 +201,7 @@ static char kJFWKWebViewProperty_jskit_extension;
         }
     }
 
-    SEL sel = @selector(mzd_jskit_extension_webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame
+    SEL sel = @selector(jf_jskit_extension_webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame
                                                    :completionHandler:);
     NSArray *arguments = @[
         webView ?: [NSNull null],
@@ -210,22 +210,22 @@ static char kJFWKWebViewProperty_jskit_extension;
         frame ?: [NSNull null],
         completionHandler,
     ];
-    [sender mzd_jskit_performSelector:sel withObjects:arguments];
+    [sender jf_jskit_performSelector:sel withObjects:arguments];
 }
 
 #pragma mark--
-- (JFJSKitExtension *)mzd_jskit_extension {
+- (JFJSKitExtension *)jf_jskit_extension {
     return objc_getAssociatedObject(self, &kJFWKWebViewProperty_jskit_extension);
 }
 
-- (void)setMzd_jskit_extension:(JFJSKitExtension *)extension {
-    if (self.mzd_jskit_extension != extension) {
+- (void)setJf_jskit_extension:(JFJSKitExtension *)extension {
+    if (self.jf_jskit_extension != extension) {
         objc_setAssociatedObject(
             self, &kJFWKWebViewProperty_jskit_extension, extension, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
-- (void)mzd_jskit_addCustomUserAgent:(NSString *)userAgent {
+- (void)jf_jskit_addCustomUserAgent:(NSString *)userAgent {
     if ([self respondsToSelector:@selector(customUserAgent)]) {
         if (userAgent.length > 0) {
             NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -239,18 +239,18 @@ static char kJFWKWebViewProperty_jskit_extension;
     }
 }
 
-- (void)mzd_jskit_evaluateJavaScriptWithURL:(NSURL *)url
+- (void)jf_jskit_evaluateJavaScriptWithURL:(NSURL *)url
                           completionHandler:(void (^)(id result, NSError *error))handler {
     if (url) {
         __weak WKWebView *weakSelf = self;
-        [self mzd_jskit_getJavaScriptWithURL:url
+        [self jf_jskit_getJavaScriptWithURL:url
                                   completion:^(NSString *string) {
                                       [weakSelf evaluateJavaScript:string completionHandler:handler];
                                   }];
     }
 }
 
-- (void)mzd_jskit_getJavaScriptWithURL:(NSURL *)url completion:(void (^)(NSString *))completion {
+- (void)jf_jskit_getJavaScriptWithURL:(NSURL *)url completion:(void (^)(NSString *))completion {
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLRequest *req     = [NSURLRequest requestWithURL:url];
     NSURLSessionDownloadTask *task;

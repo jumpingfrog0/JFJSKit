@@ -28,6 +28,10 @@
 #import <Foundation/Foundation.h>
 #import "JFJSAPIBase.h"
 
+/**
+ * Change webview title
+ */
+
 @interface JFJSAPIChangeTitle : JFJSAPIBase
 
 @end

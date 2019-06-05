@@ -30,7 +30,7 @@
 
 @implementation NSString (JFJSKitAdditions)
 
-- (id)mzd_jskit_JSONObject
+- (id)jf_jskit_JSONObject
 {
     if (!self) {
         return nil;
@@ -50,7 +50,7 @@
     return jsonObject;
 }
 
-+ (NSString *)mzd_jskit_stringWithJSONObject:(id)object
++ (NSString *)jf_jskit_stringWithJSONObject:(id)object
 {
     if (!self) {
         return nil;
@@ -68,7 +68,7 @@
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
-- (NSString *)mzd_jskit_stringByEscapingForURLArgument
+- (NSString *)jf_jskit_stringByEscapingForURLArgument
 {
 
     // Encode all the reserved characters, per RFC 3986
@@ -78,7 +78,7 @@
     return [self stringByAddingPercentEncodingWithAllowedCharacters:set];
 }
 
-- (NSString *)mzd_jskit_stringByUnescapingFromURLArgument
+- (NSString *)jf_jskit_stringByUnescapingFromURLArgument
 {
     NSMutableString *resultString = [NSMutableString stringWithString:self];
     [resultString replaceOccurrencesOfString:@"+"
@@ -88,7 +88,7 @@
     return [resultString stringByRemovingPercentEncoding];
 }
 
-- (NSString *)mzd_jskit_md5
+- (NSString *)jf_jskit_md5
 {
 
     if (self == nil || [self length] == 0) return nil;

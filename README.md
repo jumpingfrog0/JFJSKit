@@ -22,7 +22,7 @@ pod 'JFJSKit'
 
 ## Author
 
-huangdonghong, huangdonghong2@yy.com
+jumpingfrog0, jumpingfrog0@gmail.com
 
 ## License
 

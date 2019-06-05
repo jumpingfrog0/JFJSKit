@@ -70,7 +70,7 @@
 {
     __weak WKWebView *weakWV             = webView;
     __weak JFJSAPIHookWebView *weakSelf = self;
-    [webView mzd_jskit_evaluateJavaScriptWithURL:self.jsURL
+    [webView jf_jskit_evaluateJavaScriptWithURL:self.jsURL
                                completionHandler:^(id o, NSError *error) {
                                    [weakWV removeFromSuperview];
                                    if (error) {

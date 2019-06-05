@@ -30,7 +30,7 @@
 
 @implementation NSDictionary (JFJSAPI)
 
-- (NSString *)mzd_jsapi_jsSuccess
+- (NSString *)jf_jsapi_jsSuccess
 {
     NSDictionary *result;
     if (self.allKeys.count > 0) {
@@ -44,20 +44,20 @@
         };
     }
 
-    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
-    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
+    NSString *msg = [NSString jf_jskit_stringWithJSONObject:result];
+    msg           = [msg jf_jskit_stringByEscapingForURLArgument];
     return msg;
 }
 
-- (NSString *)mzd_jsapi_jsError
+- (NSString *)jf_jsapi_jsError
 {
     NSDictionary *result = @{
         @"success": @(NO),
         @"error": self,
     };
 
-    NSString *msg = [NSString mzd_jskit_stringWithJSONObject:result];
-    msg           = [msg mzd_jskit_stringByEscapingForURLArgument];
+    NSString *msg = [NSString jf_jskit_stringWithJSONObject:result];
+    msg           = [msg jf_jskit_stringByEscapingForURLArgument];
     return msg;
 }
 

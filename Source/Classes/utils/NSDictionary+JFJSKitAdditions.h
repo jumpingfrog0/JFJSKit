@@ -29,6 +29,6 @@
 
 @interface NSDictionary (JFJSKitAdditions)
 
-- (NSString *)mzd_jskit_joinURLQueries;
+- (NSString *)jf_jskit_joinURLQueries;
 
 @end

@@ -26,6 +26,7 @@
 //
 
 #import "JFJSAPICopyToClipboard.h"
+#import <UIKit/UIKit.h>
 
 
 @implementation JFJSAPICopyToClipboard

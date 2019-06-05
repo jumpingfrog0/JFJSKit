@@ -29,7 +29,7 @@
 
 @interface NSURL (JFJSKitAdditions)
 
-- (NSDictionary *)mzd_jskit_parameters;
-- (NSURL *)mzd_jskit_URLByAddQueriesFromDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)jf_jskit_parameters;
+- (NSURL *)jf_jskit_URLByAddQueriesFromDictionary:(NSDictionary *)dictionary;
 
 @end

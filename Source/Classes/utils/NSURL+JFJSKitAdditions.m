@@ -30,7 +30,7 @@
 
 @implementation NSURL (JFJSKitAdditions)
 
-- (NSDictionary *)mzd_jskit_parameters
+- (NSDictionary *)jf_jskit_parameters
 {
     NSString *parametersString = self.query;
     NSArray *array             = [parametersString componentsSeparatedByString:@"&"];
@@ -52,9 +52,9 @@
     return nil;
 }
 
-- (NSURL *)mzd_jskit_URLByAddQueriesFromDictionary:(NSDictionary *)dictionary
+- (NSURL *)jf_jskit_URLByAddQueriesFromDictionary:(NSDictionary *)dictionary
 {
-    NSString *query = [dictionary mzd_jskit_joinURLQueries];
+    NSString *query = [dictionary jf_jskit_joinURLQueries];
     if (query.length > 0) {
         NSURLComponents *comp = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:YES];
         if (comp.query.length > 0) {

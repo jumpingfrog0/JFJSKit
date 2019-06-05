@@ -54,10 +54,10 @@ RCT_EXPORT_METHOD(sendPromiseProtocol
     JFJSAPIRCTRequest *rctRequest = [[JFJSAPIRCTRequest alloc] init];
     rctRequest.url                 = [NSURL URLWithString:protocolUrl];
     rctRequest.resolver            = resolve;
-    rctRequest.view                = rootViewBridge.mzd_jskit_rctRootView;
-    rctRequest.viewController      = rootViewBridge.mzd_jskit_rctRootView.reactViewController;
+    rctRequest.view                = rootViewBridge.jf_jskit_rctRootView;
+    rctRequest.viewController      = rootViewBridge.jf_jskit_rctRootView.reactViewController;
 
-    [rootViewBridge.mzd_jskit_extension handleRequest:rctRequest];
+    [rootViewBridge.jf_jskit_extension handleRequest:rctRequest];
 }
 
 @end
