@@ -28,7 +28,6 @@
 #import "NSData+JFJSKitAdditions.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-
 @implementation NSData (JFJSKitAdditions)
 
 - (NSString *)jf_jskit_md5 {

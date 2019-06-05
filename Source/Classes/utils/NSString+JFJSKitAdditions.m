@@ -41,10 +41,13 @@
     id jsonObject  = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
 
     if (error) {
-//        NSException *e =
-//            [NSException exceptionWithName:@"JF JSONParser Error" reason:error.localizedDescription userInfo:nil];
-//        [e raise];
+#ifdef DEBUG
+        NSException *e =
+            [NSException exceptionWithName:@"JSONParser Error" reason:error.localizedDescription userInfo:nil];
+        [e raise];
+#else
         return nil;
+#endif
     }
 
     return jsonObject;
@@ -60,9 +63,13 @@
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:&error];
 
     if (error) {
+#ifdef DEBUG
         NSException *e =
-            [NSException exceptionWithName:@"JF JSONParser Error" reason:error.localizedDescription userInfo:nil];
+            [NSException exceptionWithName:@"JSONParser Error" reason:error.localizedDescription userInfo:nil];
         [e raise];
+#else
+        return nil;
+#endif
     }
 
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -70,7 +77,6 @@
 
 - (NSString *)jf_jskit_stringByEscapingForURLArgument
 {
-
     // Encode all the reserved characters, per RFC 3986
     // (<http://www.ietf.org/rfc/rfc3986.txt>)
     NSMutableCharacterSet *set = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
