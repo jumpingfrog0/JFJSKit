@@ -31,22 +31,26 @@
 @implementation JFJSKitExtension
 
 - (BOOL)_allowScheme:(NSString *)scheme {
-    return [scheme isEqualToString:self.config.domain] || [scheme isEqualToString:@"http"] ||
-    [scheme isEqualToString:@"https"] || [self.config.otherDomains containsObject:scheme];
+    return [scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]
+            || [self.config.allowSchemes containsObject:scheme];
 }
 
 - (BOOL)handleRequest:(id<JFJSAPIRequestProtocol>)request {
     NSString *scheme = request.url.scheme ?: @"";
 
     if ([self _allowScheme:scheme]) {
-        return [self.apiService testRequest:request];
+        return [self.apiService sendRequest:request];
     }
 
     BOOL allowScheme = [self.config.openURLSchemes[scheme] boolValue];
     if (allowScheme) {
         UIApplication *app = [UIApplication sharedApplication];
         if ([app canOpenURL:request.url]) {
-            [app openURL:request.url options:@{} completionHandler:nil];
+            if (@available(iOS 10, *)) {
+                [app openURL:request.url options:@{} completionHandler:nil];
+            } else {
+                [app openURL:request.url];
+            }
         }
     }
 

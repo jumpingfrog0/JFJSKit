@@ -57,6 +57,6 @@ typedef void (^JFJSAPICompletionBlock)(void);
 
 @optional
 + (NSURL *)commandURL;
-+ (NSArray *)httpCommands;
++ (NSArray <NSString *> *)httpCommands;
 
 @end

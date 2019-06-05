@@ -27,7 +27,6 @@
 
 #import "JFJSAPIProtocol.h"
 #import "JFJSAPIRequestProtocol.h"
-#import "JFJSKitExtensionConfig.h"
 #import <Foundation/Foundation.h>
 
 @interface JFJSAPIService : NSObject
@@ -35,6 +34,6 @@
 - (void)registerApi:(Class<JFJSAPIProtocol>)api;
 - (void)unregisterApi:(Class<JFJSAPIProtocol>)api;
 
-- (BOOL)testRequest:(id<JFJSAPIRequestProtocol>)request;
+- (BOOL)sendRequest:(id<JFJSAPIRequestProtocol>)request;
 
 @end

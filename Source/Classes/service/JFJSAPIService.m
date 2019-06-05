@@ -35,88 +35,83 @@
 #import "JFJSAPIOpenURL.h"
 #import "JFJSAPITerminate.h"
 #import "JFJSKitDefines.h"
-#import "NSDictionary+JFJSAPI.h"
-#import "NSURL+JFJSAPI.h"
 
 @interface JFJSAPIService ()
 
 @property (nonatomic, strong) NSMutableDictionary *apis;
 @property (nonatomic, strong) NSMutableDictionary *httpApis;
-@property (nonatomic, strong) NSMutableArray *activeApi;
+@property (nonatomic, strong) NSMutableArray *activeApis;
 
 @end
 
 @implementation JFJSAPIService
 
-- (instancetype)init
-{
+- (instancetype)init {
     if (self = [super init]) {
-        self.apis      = [NSMutableDictionary dictionary];
-        self.httpApis  = [NSMutableDictionary dictionary];
-        self.activeApi = [NSMutableArray array];
+        self.apis = [NSMutableDictionary dictionary];
+        self.httpApis = [NSMutableDictionary dictionary];
+        self.activeApis = [NSMutableArray array];
 
         NSArray *apisClass = @[
-            JFJSAPICopyToClipboard.class,
-            JFJSAPIHistoryCleaner.class,
-            JFJSAPIHookWebView.class,
-            JFJSAPILocation.class,
-            JFJSAPIOpenBrowser.class,
-            JFJSAPIOpenURL.class,
-            JFJSAPITerminate.class,
-            JFJSAPIChangeTitle.class,
+                JFJSAPICopyToClipboard.class,
+                JFJSAPIHistoryCleaner.class,
+                JFJSAPIHookWebView.class,
+                JFJSAPILocation.class,
+                JFJSAPIOpenBrowser.class,
+                JFJSAPIOpenURL.class,
+                JFJSAPITerminate.class,
+                JFJSAPIChangeTitle.class
         ];
         [apisClass enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            Class<JFJSAPIProtocol> aClass = obj;
+            Class <JFJSAPIProtocol> aClass = obj;
             [self registerApi:aClass];
         }];
     }
     return self;
 }
 
-- (void)registerApi:(Class<JFJSAPIProtocol>)api
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
+- (void)registerApi:(Class <JFJSAPIProtocol>)api {
     if ([api conformsToProtocol:@protocol(JFJSAPIProtocol)]) {
-        NSString *command  = [api command];
+        NSString *command = [api command];
         self.apis[command] = api;
 
         if ([api respondsToSelector:@selector(httpCommands)]) {
             NSArray *httpCommands = [api httpCommands];
-            [httpCommands enumerateObjectsUsingBlock:^(NSString *obj1, NSUInteger idx1, BOOL *stop1) {
-                self.httpApis[obj1] = api;
+            [httpCommands enumerateObjectsUsingBlock:^(NSString *httpCommand, NSUInteger idx, BOOL *stop) {
+                if (![httpCommand isKindOfClass:NSString.class]) {
+                    JFLogError(@"Can not register plugin: %@, httpCommands must be a NSString array", NSStringFromClass(api.class));
+                    *stop = YES;
+                    return;
+                }
+
+                self.httpApis[httpCommand] = api;
             }];
         }
     } else {
-        JFLogWarning(@"can not register %@ plugin, because it is not supported", NSStringFromClass(api.class));
+        JFLogWarning(@"Can not register plugin: %@, because it is not supported", NSStringFromClass(api.class));
     }
-#pragma clang diagnostic pop
 }
 
-- (void)unregisterApi:(Class<JFJSAPIProtocol>)api
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
+- (void)unregisterApi:(Class <JFJSAPIProtocol>)api {
     if ([api conformsToProtocol:@protocol(JFJSAPIProtocol)]) {
-        NSString *command  = [api command];
-        self.apis[command] = nil;
+        NSString *command = [api command];
+        [self.apis removeObjectForKey:command];
 
         if ([api respondsToSelector:@selector(httpCommands)]) {
             NSArray *httpCommands = [api httpCommands];
-            [httpCommands enumerateObjectsUsingBlock:^(NSString *obj1, NSUInteger idx1, BOOL *stop1) {
-                self.httpApis[obj1] = nil;
+            [httpCommands enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
+                [self.httpApis removeObjectForKey:obj];
             }];
         }
     } else {
-        JFLogWarning(@"can not unregister %@ plugin, because it is not supported", NSStringFromClass(api.class));
+        JFLogWarning(@"can not unregister plugin: %@, because it is not supported", NSStringFromClass(api.class));
     }
-#pragma clang diagnostic pop
 }
 
 
 #pragma mark--
-- (id<JFJSAPIProtocol>)searchApi:(NSString *)command
-{
+
+- (id <JFJSAPIProtocol>)searchApi:(NSString *)command {
     Class apiClass = self.apis[command];
     if (!apiClass) {
         apiClass = self.httpApis[command];
@@ -129,21 +124,21 @@
 }
 
 #pragma mark--
-- (BOOL)testRequest:(id<JFJSAPIRequestProtocol>)request
-{
+
+- (BOOL)sendRequest:(id <JFJSAPIRequestProtocol>)request {
+    // todo: should append with host?
     NSString *key = [request.url.host stringByAppendingPathComponent:request.url.path];
-    id<JFJSAPIProtocol> api = [self searchApi:key];
+    id <JFJSAPIProtocol> api = [self searchApi:key];
     if (api) {
         api.request = request;
-        // api 任务可能是异步，需要在任务完成之前勾住 plugin 对象
-        // api 执行完成后释放
-        [self.activeApi addObject:api];
+        // api task might be asynchronous, we need to hold the reference of api object before task completed.
+        [self.activeApis addObject:api];
 
-        __weak typeof(self) weakSelf        = self;
-        __weak id<JFJSAPIProtocol> weakApi = api;
-
+        __weak typeof(self) weakSelf = self;
+        __weak id <JFJSAPIProtocol> weakApi = api;
         [api runOnCompletion:^{
-            [weakSelf.activeApi performSelector:@selector(removeObject:) withObject:weakApi afterDelay:1];
+            // release active api object after task completed
+            [weakSelf.activeApis performSelector:@selector(removeObject:) withObject:weakApi afterDelay:1];
         }];
 
         return YES;

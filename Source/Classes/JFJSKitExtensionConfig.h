@@ -30,9 +30,19 @@
 
 @interface JFJSKitExtensionConfig : NSObject
 
-@property (nonatomic, strong) NSString *domain;
-// 新版扩展支持更多domain
-@property (nonatomic, copy) NSSet *otherDomains;
-@property (nonatomic, strong) NSDictionary *openURLSchemes;
+/**
+ * The header of protocol allowed among native client, webview and react-native.
+ */
+@property (nonatomic, copy) NSSet<NSString *> *allowSchemes;
+
+/**
+ * The schemes that allow to open url.
+ *
+ * By default, The WKWebView injected with jskit plugin is not allowed to open URLScheme. It's mean that you can not open other external app.
+ * Adding some URLSchemes to whitelist for allowing to open external url by setting `openURLSchemes`.
+ *
+ * such as: @{ @"scheme" : @(YES) }
+ */
+@property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *openURLSchemes;
 
 @end

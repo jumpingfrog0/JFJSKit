@@ -34,9 +34,9 @@
 - (NSString *)jf_jsapi_jsEvaluationWith:(NSString *)msg
 {
     NSString *jsFunction = [self jf_jsapi_callback];
-    NSString *jsFlag     = [self jf_jsapi_flag];
-    if (jsFunction && jsFlag) {
-        return [NSString stringWithFormat:@"javascript:%@(\"%@\", \"%@\")", jsFunction, jsFlag, msg];
+    NSString *jsSeq     = [self jf_jsapi_seq];
+    if (jsFunction && jsSeq) {
+        return [NSString stringWithFormat:@"javascript:%@(\"%@\", \"%@\")", jsFunction, jsSeq, msg];
     }
     return nil;
 }
@@ -53,9 +53,9 @@
     return [self jf_jskit_parameters][@"callback"];
 }
 
-- (NSString *)jf_jsapi_flag
+- (NSString *)jf_jsapi_seq
 {
-    return [self jf_jskit_parameters][@"flag"];
+    return [self jf_jskit_parameters][@"seq"];
 }
 
 @end

@@ -33,6 +33,6 @@
 
 - (NSDictionary *)jf_jsapi_parameters;
 - (NSString *)jf_jsapi_callback;
-- (NSString *)jf_jsapi_flag;
+- (NSString *)jf_jsapi_seq;
 
 @end
