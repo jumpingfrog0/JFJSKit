@@ -30,7 +30,10 @@
 #import "RCTBridge+JFJSKitPlugin.h"
 #import "JFJSKitPlugin.h"
 #import <React/RCTBridge+Private.h>
+#import <React/RCTBridgeModule.h>
 #import <React/RCTRootView.h>
+#import "JFJSKit.h"
+#import <React/RCTAssert.h>
 
 @interface JFJSKitRCTPlugin ()<RCTBridgeModule>
 
@@ -39,25 +42,34 @@
 @implementation JFJSKitRCTPlugin
 @synthesize bridge = _bridge;
 
+RCT_EXTERN void RCTRegisterModule(Class);
+
++ (NSString *)moduleName {
+    NSString *name = JSKitGetRCTModule();
+    RCTAssert(name.length <= 0, @"You must register a react-native module at first.");
+    return name;
+}
+
++ (void)load {
+    RCTRegisterModule(self);
+}
+
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_MODULE(JSKitBridge);
-
-RCT_EXPORT_METHOD(sendPromiseProtocol
-                  : (NSString *)protocolUrl
-                  : (RCTPromiseResolveBlock)resolver
-                  : (RCTPromiseRejectBlock)rejecter) {
+RCT_EXPORT_METHOD(sendPromiseProtocol: (NSString *)protocolUrl
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)rejecte) {
     RCTBridge *rootViewBridge = [self.bridge parentBridge];
 
     JFJSAPIRCTRequest *rctRequest = [[JFJSAPIRCTRequest alloc] init];
     rctRequest.url                 = [NSURL URLWithString:protocolUrl];
-    rctRequest.resolver            = resolver;
+    rctRequest.resolver            = resolve;
     rctRequest.view                = rootViewBridge.jf_jskit_rctRootView;
     rctRequest.viewController      = rootViewBridge.jf_jskit_rctRootView.reactViewController;
 
-    [rootViewBridge.jf_jskit_extension handleRequest:rctRequest];
+    [rootViewBridge.jf_jskit_plugin handleRequest:rctRequest];
 }
 
 @end

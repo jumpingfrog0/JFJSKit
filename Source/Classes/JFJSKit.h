@@ -1,5 +1,5 @@
 //
-//  JFJSKitPluginConfig.h
+//  JFJSKit.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
@@ -24,26 +24,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-
-
 #import <Foundation/Foundation.h>
 
-@interface JFJSKitPluginConfig : NSObject
+extern void JSKitRegisterRCTModule(NSString *);
+extern NSString *JSKitGetRCTModule(void);
 
-/**
- * The header of protocol allowed among native client, webview and react-native.
- */
-@property (nonatomic, copy) NSSet<NSString *> *allowSchemes;
-
-/**
- * The schemes that allow to open url.
- *
- * By default, The WKWebView injected with jskit plugin is not allowed to open URLScheme. It's mean that you can not open other external app.
- * Adding some URLSchemes to whitelist for allowing to open external url by setting `openURLSchemes`.
- *
- * such as: @{ @"scheme" : @(YES) }
- */
-@property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *openURLSchemes;
-
-@property (nonatomic, copy) NSString *moduleName;
-@end
