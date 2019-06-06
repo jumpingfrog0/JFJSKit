@@ -58,7 +58,7 @@
 }
 
 - (void)apiRunOnCompletion:(JFJSAPICompletionBlock)completion {
-    JFLogWarning(@"The request is neither `JFJSAPIWebRequest` nor `JFJSAPIRCTRequest`");
+    JFLogWarning(@"The request should be neither `JFJSAPIWebRequest` nor `JFJSAPIRCTRequest`");
     [self.request onFailure:nil];
     if (completion) {
         completion();

@@ -1,5 +1,5 @@
 //
-//  WKWebView+JFJSKitExtension_jsInject.m
+//  WKWebView+JFJSKitPlugin_jsInject.m
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.
