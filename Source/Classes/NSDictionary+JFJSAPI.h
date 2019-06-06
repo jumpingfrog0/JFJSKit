@@ -1,5 +1,5 @@
 //
-//  NSDictionary+JFJSAPIService.h
+//  NSDictionary+JFJSAPI.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.

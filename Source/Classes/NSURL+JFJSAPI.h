@@ -1,5 +1,5 @@
 //
-//  NSURL+JFJSAPIService.h
+//  NSURL+JFJSAPI.h
 //  JFJSKit
 //
 //  Created by jumpingfrog0 on 2019/06/04.

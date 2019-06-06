@@ -39,6 +39,6 @@
 
 @property (nonatomic, copy) NSArray<__kindof RCTRootView *> *jf_jskit_rctRootViewStack;
 
-@property (nonatomic, strong) JFJSKitPlugin *jf_jskit_extension;
+@property (nonatomic, strong) JFJSKitPlugin *jf_jskit_plugin;
 
 @end
